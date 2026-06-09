@@ -1,6 +1,6 @@
 :root{
   --bg:#ffffff; --bg2:#f6f7fb; --ink:#0d1117; --muted:#5b6675;
-  --line:#e8eaf0; --brand:#5b5bf5; --brand2:#00c2a8; --accent:#ff7a3d;
+  --line:#e8eaf0; --brand:#0d1117; --brand2:#5b6675; --accent:#ff7a3d;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -23,7 +23,7 @@ nav a.lnk:hover{color:var(--ink)}
 .btn.ghost:hover{border-color:#c9cdd8}
 
 .hero{text-align:center;padding:80px 0 0}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--brand);background:#eef0ff;border:1px solid #e0e3ff;padding:6px 14px;border-radius:999px;margin-bottom:24px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--brand);background:#f0f1f4;border:1px solid #e3e5ea;padding:6px 14px;border-radius:999px;margin-bottom:24px}
 h1{font-size:60px;line-height:1.05;font-weight:900;letter-spacing:-1.5px}
 h1 .grad{background:linear-gradient(100deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .lede{font-size:19px;color:var(--muted);max-width:620px;margin:22px auto 0}
@@ -81,8 +81,16 @@ footer{padding:40px 0;font-size:13px;color:var(--muted);border-top:1px solid var
 footer .row{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
 footer a{color:var(--muted)} footer a:hover{color:var(--ink)}
 
-.langsw{display:flex;gap:12px;font-size:13px;flex-wrap:wrap}
-.langsw a{color:var(--muted)} .langsw a[aria-current]{color:var(--ink);font-weight:600}
+.langsw{position:relative;font-size:13px}
+.langsw summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:6px;color:var(--muted);padding:6px 4px}
+.langsw summary::-webkit-details-marker{display:none}
+.langsw summary:hover{color:var(--ink)}
+.langsw .caret{font-size:10px}
+.langsw[open] .caret{transform:rotate(180deg)}
+.langsw-menu{position:absolute;right:0;top:100%;margin-top:6px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 30px -8px rgba(13,17,23,.25);padding:6px;display:flex;flex-direction:column;min-width:140px;z-index:60}
+.langsw-menu a{padding:8px 12px;border-radius:7px;color:var(--muted);white-space:nowrap}
+.langsw-menu a:hover{background:var(--bg2);color:var(--ink)}
+.langsw-menu a[aria-current]{color:var(--ink);font-weight:600}
 
 @media(max-width:780px){
   h1{font-size:40px} .feat{grid-template-columns:1fr;gap:24px}

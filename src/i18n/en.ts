@@ -22,7 +22,7 @@ const en: Dict = {
   stats: { damageTypes: 'Damage types', panels: 'Analysis panels', languages: 'Languages', openSource: 'Open-source · read-only' },
   featuresKicker: 'Features',
   featuresTitle: 'Not just a number — a full combat dashboard',
-  featuresSub: 'Four panels, each with one job. One keypress overlays them on the game, and clicks pass through so they never block play.',
+  featuresSub: 'Five panels, each with one job. One keypress overlays them on the game, and clicks pass through so they never block play.',
   features: [
     {
       tag: 'F9 · Live',
@@ -47,6 +47,12 @@ const en: Dict = {
       title: 'Personalized farming planner',
       body: 'Not a static wiki table — calibrated to your own real runs. Gold/sec and exp/sec ranked side by side, telling you exactly which stage to farm.',
       points: ['Measured values for cleared stages, personal multiplier for the rest', 'EXP-retention column reflects the level penalty', 'Auto-detects gear changes and prompts a re-clear'],
+    },
+    {
+      tag: 'F5 · Log',
+      title: 'Box log',
+      body: 'Track every box you open — total, boss boxes, and boxes per hour, each timestamped by stage. Know your real drop rate instead of guessing.',
+      points: ['Total and boss-box counts', 'Boxes per hour', 'Timestamped log per stage'],
     },
   ],
   install: {

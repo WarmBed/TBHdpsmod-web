@@ -22,7 +22,7 @@ const zhHans: Dict = {
   stats: { damageTypes: '伤害类型', panels: '分析面板', languages: '界面语言', openSource: '开源 · 只读' },
   featuresKicker: '功能',
   featuresTitle: '不只是个数字，是一套战斗仪表盘',
-  featuresSub: '四个面板各司其职。按一个键就叠在游戏上，点击穿透、不挡操作。',
+  featuresSub: '五个面板各司其职。按一个键就叠在游戏上，点击穿透、不挡操作。',
   features: [
     {
       tag: 'F9 · 实时',
@@ -47,6 +47,12 @@ const zhHans: Dict = {
       title: '个性化刷图规划',
       body: '不是抄 wiki 的死表格 —— 用你自己的真实战绩校准。gold/秒 与 exp/秒 并排排名，直接告诉你该刷哪一关。',
       points: ['已通关用实测值，未通关用个人倍率推估', 'EXP 保留率栏位反映等级惩罚', '装备一换自动检测，提示重新校准'],
+    },
+    {
+      tag: 'F5 · 记录',
+      title: '宝箱记录',
+      body: '记录你开的每一个宝箱——总数、王箱数、每小时箱数，按关卡逐条标上时间。掌握你真实的爆箱率，不用猜。',
+      points: ['总数与王箱数', '每小时箱数', '按关卡的时间戳记录'],
     },
   ],
   install: {

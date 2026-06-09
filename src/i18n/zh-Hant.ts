@@ -22,7 +22,7 @@ const zhHant: Dict = {
   stats: { damageTypes: '傷害類型', panels: '分析面板', languages: '介面語言', openSource: '開源 · 只讀' },
   featuresKicker: '功能',
   featuresTitle: '不只是個數字，是一套戰鬥儀表板',
-  featuresSub: '四個面板各司其職。按一個鍵就疊在遊戲上，點擊穿透、不擋操作。',
+  featuresSub: '五個面板各司其職。按一個鍵就疊在遊戲上，點擊穿透、不擋操作。',
   features: [
     {
       tag: 'F9 · 即時',
@@ -47,6 +47,12 @@ const zhHant: Dict = {
       title: '個人化刷圖規劃',
       body: '不是抄 wiki 的死表格 —— 用你自己的真實戰績校準。gold/秒 與 exp/秒 並排排名，直接告訴你該刷哪一關。',
       points: ['已通關用實測值，未通關用個人倍率推估', 'EXP 保留率欄位反映等級懲罰', '裝備一換自動偵測，提示重新校準'],
+    },
+    {
+      tag: 'F5 · 紀錄',
+      title: '寶箱紀錄',
+      body: '記錄你開的每一個寶箱——總數、王箱數、每小時箱數，依關卡逐筆標上時間。掌握你真實的爆箱率，不用猜。',
+      points: ['總數與王箱數', '每小時箱數', '依關卡的時間戳記錄'],
     },
   ],
   install: {

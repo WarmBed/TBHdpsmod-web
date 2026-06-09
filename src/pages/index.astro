@@ -11,9 +11,10 @@ import dps from '../assets/dps.png';
 import taken from '../assets/taken.png';
 import compare from '../assets/compare.png';
 import farm from '../assets/farm.png';
+import box from '../assets/box.png';
 const locale = 'en' as const;
 const dict = getDict(locale);
-const images = [dps, taken, compare, farm];
+const images = [dps, taken, compare, farm, box];
 ---
 <BaseLayout locale={locale} path="/" title={dict.meta.homeTitle} description={dict.meta.homeDesc} jsonLd>
   <Hero locale={locale} />

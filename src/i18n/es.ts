@@ -22,7 +22,7 @@ const es: Dict = {
   stats: { damageTypes: 'Tipos de daño', panels: 'Paneles de análisis', languages: 'Idiomas', openSource: 'Código abierto · solo lectura' },
   featuresKicker: 'Características',
   featuresTitle: 'No solo un número — un panel de combate completo',
-  featuresSub: 'Cuatro paneles, cada uno con una función. Una tecla los superpone en el juego, y los clics pasan a través para no bloquear el juego.',
+  featuresSub: 'Cinco paneles, cada uno con una función. Una tecla los superpone en el juego, y los clics pasan a través para no bloquear el juego.',
   features: [
     {
       tag: 'F9 · En vivo',
@@ -47,6 +47,12 @@ const es: Dict = {
       title: 'Planificador de farmeo personalizado',
       body: 'No es una tabla estática de wiki — calibrada a tus propias partidas reales. Gold/seg y exp/seg clasificados uno al lado del otro, diciéndote exactamente qué etapa farmear.',
       points: ['Valores medidos para etapas completadas, multiplicador personal para el resto', 'Columna de retención de EXP refleja la penalización de nivel', 'Detecta automáticamente cambios de equipo y sugiere re-completar'],
+    },
+    {
+      tag: 'F5 · Registro',
+      title: 'Registro de cofres',
+      body: 'Registra cada cofre que abres: total, cofres de jefe y cofres por hora, con marca de tiempo por etapa. Conoce tu tasa de botín real en lugar de adivinar.',
+      points: ['Total y cofres de jefe', 'Cofres por hora', 'Registro con marca de tiempo por etapa'],
     },
   ],
   install: {
