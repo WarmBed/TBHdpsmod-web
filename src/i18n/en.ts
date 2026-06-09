@@ -28,7 +28,7 @@ const en: Dict = {
       tag: 'F9 · Live',
       title: 'DPS panel',
       body: 'Live DPS over a 5-second sliding window, plus peak and average. See your damage structure at a glance and know which stat to gear next.',
-      points: ['Live / peak / average DPS', 'Crit rate and crit-damage share', 'Melee / projectile / area / summon / DoT / trap breakdown'],
+      points: ['Live / peak / average DPS', 'Crit rate and crit-damage share', 'Melee / projectile / area / summon / DoT / trap breakdown', 'Auto-fit + UI scaling — panels never run off-screen (v0.6.0)'],
     },
     {
       tag: 'F10 · Defense',

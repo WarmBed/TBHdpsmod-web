@@ -28,7 +28,7 @@ const es: Dict = {
       tag: 'F9 · En vivo',
       title: 'Panel de DPS',
       body: 'DPS en vivo en una ventana deslizante de 5 segundos, más pico y promedio. Ve tu estructura de daño de un vistazo y sabe qué estadística mejorar a continuación.',
-      points: ['DPS en vivo / pico / promedio', 'Tasa de crítico y porcentaje de daño crítico', 'Desglose: cuerpo a cuerpo / proyectil / área / invocación / DoT / trampa'],
+      points: ['DPS en vivo / pico / promedio', 'Tasa de crítico y porcentaje de daño crítico', 'Desglose: cuerpo a cuerpo / proyectil / área / invocación / DoT / trampa', 'Autoajuste + escalado de UI; los paneles nunca se salen de pantalla (v0.6.0)'],
     },
     {
       tag: 'F10 · Defensa',
