@@ -2,8 +2,8 @@ import type { Dict } from './types';
 
 const zhHant: Dict = {
   meta: {
-    homeTitle: 'TBH DPS Meter — TaskBarHero 即時 DPS 疊圖',
-    homeDesc: '免費開源的 TaskBarHero（TBH）遊戲內疊圖：即時 DPS、承受傷害、關卡逐波比較與個人化刷圖規劃。只讀資料，絕不修改遊戲數值。',
+    homeTitle: 'TBH DPS Meter — 塔斯克巴·英雄 即時 DPS 疊圖',
+    homeDesc: '免費開源的 塔斯克巴·英雄（TBH / Task Bar Hero）遊戲內疊圖：即時 DPS、承受傷害、關卡逐波比較與個人化刷圖規劃。只讀資料，絕不修改遊戲數值。',
     installTitle: 'TaskBarHero 安裝教學 — TBH DPS Meter',
     installDesc: '三步驟安裝 TaskBarHero 的 TBH DPS Meter 疊圖，免編譯。',
     changelogTitle: '更新日誌 — TBH DPS Meter',

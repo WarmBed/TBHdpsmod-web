@@ -2,8 +2,8 @@ import type { Dict } from './types';
 
 const en: Dict = {
   meta: {
-    homeTitle: 'TBH DPS Meter — Real-time DPS overlay for TaskBarHero',
-    homeDesc: 'Free, open-source in-game overlay for TaskBarHero (TBH). Live DPS, damage taken, per-wave stage comparison and a personalized farming planner. Read-only — never modifies game values.',
+    homeTitle: 'TBH DPS Meter — Real-time DPS overlay for Task Bar Hero (TBH)',
+    homeDesc: 'Free, open-source in-game overlay for Task Bar Hero (TBH / TaskBarHero). Live DPS, damage taken, per-wave stage comparison and a personalized farming planner. Read-only — never modifies game values.',
     installTitle: 'Install — TBH DPS Meter for TaskBarHero',
     installDesc: 'Install the TBH DPS Meter overlay for TaskBarHero in three steps. No compiling needed.',
     changelogTitle: 'Changelog — TBH DPS Meter',

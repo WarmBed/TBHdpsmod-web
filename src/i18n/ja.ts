@@ -2,8 +2,8 @@ import type { Dict } from './types';
 
 const ja: Dict = {
   meta: {
-    homeTitle: 'TBH DPS Meter — TaskBarHero リアルタイム DPS オーバーレイ',
-    homeDesc: 'TaskBarHero（TBH）向け無料オープンソースのゲーム内オーバーレイ。リアルタイム DPS、被ダメージ、ウェーブ別ステージ比較、個人ファーミングプランナー搭載。読み取り専用 — ゲーム値は一切変更しません。',
+    homeTitle: 'TBH DPS Meter — タスクバーヒーロー リアルタイム DPS オーバーレイ',
+    homeDesc: 'タスクバーヒーロー（TBH / Task Bar Hero）向け無料オープンソースのゲーム内オーバーレイ。リアルタイム DPS、被ダメージ、ウェーブ別ステージ比較、個人ファーミングプランナー搭載。読み取り専用 — ゲーム値は一切変更しません。',
     installTitle: 'インストール — TBH DPS Meter for TaskBarHero',
     installDesc: 'TaskBarHero の TBH DPS Meter オーバーレイを3ステップでインストール。コンパイル不要。',
     changelogTitle: 'チェンジログ — TBH DPS Meter',
