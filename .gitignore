@@ -24,3 +24,6 @@ pnpm-debug.log*
 .idea/
 
 .vscode/
+
+# brainstorm visual companion
+.superpowers/
