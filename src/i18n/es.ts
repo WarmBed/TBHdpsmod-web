@@ -22,8 +22,14 @@ const es: Dict = {
   stats: { damageTypes: 'Tipos de daño', panels: 'Paneles de análisis', languages: 'Idiomas', openSource: 'Código abierto · solo lectura' },
   featuresKicker: 'Características',
   featuresTitle: 'No solo un número — un panel de combate completo',
-  featuresSub: 'Cinco paneles, cada uno con una función. Una tecla los superpone en el juego, y los clics pasan a través para no bloquear el juego.',
+  featuresSub: 'Ocho paneles, cada uno con una función. Una tecla los superpone en el juego, y los clics pasan a través para no bloquear el juego.',
   features: [
+    {
+      tag: 'F1 · Centro',
+      title: 'Centro de control',
+      body: 'Un pequeño centro siempre visible: DPS en vivo, tiempo de partida y cofres abiertos de un vistazo, más una fila de botones para abrir y cerrar todos los demás paneles. La puerta de entrada a toda la superposición.',
+      points: ['DPS en vivo, tiempo de partida y conteo de cofres siempre visibles', 'Un toque para abrir o cerrar cada panel', 'Arrástralo desde cualquier punto hasta donde te convenga'],
+    },
     {
       tag: 'F9 · En vivo',
       title: 'Panel de DPS',
@@ -53,6 +59,18 @@ const es: Dict = {
       title: 'Registro de cofres',
       body: 'Registra cada cofre que abres: total, cofres de jefe y cofres por hora, con marca de tiempo por etapa. Conoce tu tasa de botín real en lugar de adivinar.',
       points: ['Total y cofres de jefe', 'Cofres por hora', 'Registro con marca de tiempo por etapa'],
+    },
+    {
+      tag: 'F4 · Aperturas',
+      title: 'Estadísticas de calidad al abrir',
+      body: 'Desglosa cada cofre que abres en una matriz de calidad × origen: cuánto de Común a Trascendente, cuánto de cofres normales vs de jefe, con un registro de aperturas línea por línea debajo.',
+      points: ['Matriz calidad × tipo de cofre (conteo + %)', 'Reparto: Común / Poco común / Raro / Legendario / Trascendente', 'Registro línea por línea: hora, tipo de cofre, calidad, objeto'],
+    },
+    {
+      tag: 'F3 · Mapa de calor',
+      title: 'Mapa de calor de botín',
+      body: 'Despliega tus cofres y botín en un mapa de calor de día × 24 horas para ver tus mejores franjas, con un gráfico de tendencia de tiempo de claro debajo que sigue la etapa seleccionada en F11.',
+      points: ['Dos mapas de calor día×hora: cofres obtenidos × tasa de botín', 'Pasa el cursor por cualquier celda para ver qué abriste entonces', 'Gráfico de tendencia de tiempo de claro, sincronizado con tu etapa en F11'],
     },
   ],
   install: {

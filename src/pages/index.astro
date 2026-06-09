@@ -7,14 +7,17 @@ import InstallSteps from '../components/InstallSteps.astro';
 import Faq from '../components/Faq.astro';
 import FinalCta from '../components/FinalCta.astro';
 import { getDict } from '../i18n';
+import hub from '../assets/hub.png';
 import dps from '../assets/dps.png';
 import taken from '../assets/taken.png';
 import compare from '../assets/compare.png';
 import farm from '../assets/farm.png';
 import box from '../assets/box.png';
+import boxopen from '../assets/boxopen.png';
+import heatmap from '../assets/heatmap.png';
 const locale = 'en' as const;
 const dict = getDict(locale);
-const images = [dps, taken, compare, farm, box];
+const images = [hub, dps, taken, compare, farm, box, boxopen, heatmap];
 ---
 <BaseLayout locale={locale} path="/" title={dict.meta.homeTitle} description={dict.meta.homeDesc} jsonLd>
   <Hero locale={locale} />

@@ -22,8 +22,14 @@ const en: Dict = {
   stats: { damageTypes: 'Damage types', panels: 'Analysis panels', languages: 'Languages', openSource: 'Open-source · read-only' },
   featuresKicker: 'Features',
   featuresTitle: 'Not just a number — a full combat dashboard',
-  featuresSub: 'Five panels, each with one job. One keypress overlays them on the game, and clicks pass through so they never block play.',
+  featuresSub: 'Eight panels, each with one job. One keypress overlays them on the game, and clicks pass through so they never block play.',
   features: [
+    {
+      tag: 'F1 · Hub',
+      title: 'Control center',
+      body: 'A tiny always-on hub: live DPS, run time and boxes opened at a glance, plus a row of buttons to toggle every other panel. The front door to the whole overlay.',
+      points: ['Live DPS, run time and box count always visible', 'One-tap toggle for every panel', 'Drag it from anywhere to wherever suits you'],
+    },
     {
       tag: 'F9 · Live',
       title: 'DPS panel',
@@ -53,6 +59,18 @@ const en: Dict = {
       title: 'Box log',
       body: 'Track every box you open — total, boss boxes, and boxes per hour, each timestamped by stage. Know your real drop rate instead of guessing.',
       points: ['Total and boss-box counts', 'Boxes per hour', 'Timestamped log per stage'],
+    },
+    {
+      tag: 'F4 · Opens',
+      title: 'Box-open quality stats',
+      body: 'Break down every box you open into a quality × source matrix — how much Common through Transcendent, how much from normal vs boss boxes — with a line-by-line open log underneath.',
+      points: ['Quality × box-kind matrix (count + %)', 'Common / Uncommon / Rare / Legendary / Transcendent split', 'Line-by-line log: time, box kind, quality, item'],
+    },
+    {
+      tag: 'F3 · Heatmap',
+      title: 'Loot heatmap',
+      body: 'Flatten your box pickups and drops into a day × 24-hour heatmap to see your hottest windows, with a clear-time trend chart underneath that follows the stage selected in F11.',
+      points: ['Two day×hour heatmaps: boxes obtained × drop rate', 'Hover any cell to see what you opened then', 'Clear-time trend chart, mirroring your F11 stage'],
     },
   ],
   install: {
