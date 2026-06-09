@@ -1,4 +1,4 @@
-export const SITE_URL = process.env.SITE_URL ?? 'https://tbh-dps-meter.zeabur.app';
+export const SITE_URL = process.env.SITE_URL ?? 'https://tbhdspmeter.zeabur.app';
 export const GITHUB_OWNER = 'WarmBed';
 export const GITHUB_REPO = 'TBH-DPS-dashboard';
 export const LATEST_VERSION = 'v0.6.0';
