@@ -2,13 +2,13 @@ import type { Dict } from './types';
 
 const zhHans: Dict = {
   meta: {
-    homeTitle: 'TBH DPS Meter — TaskBarHero 伤害量表 / DPS 叠图',
+    homeTitle: 'TBH DPS Meter — 塔斯克巴·英雄 / TaskBarHero DPS 伤害叠图',
     homeDesc: '免费开源的 TaskBarHero（塔斯克巴·英雄 / Task Bar Hero / TBH）游戏内叠图：实时 DPS、承受伤害、关卡逐波比较、刷图规划、宝箱记录、掉宝热力图与 Steam 市场查价。只读数据，绝不修改游戏数值。',
     installTitle: 'TaskBarHero 安装教程 — TBH DPS Meter 伤害叠图',
     installDesc: '三步骤安装 TaskBarHero（Task Bar Hero）的 TBH DPS Meter 叠图（BepInEx 插件），免编译。',
     changelogTitle: '更新日志 — TBH DPS Meter（TaskBarHero）',
     changelogDesc: 'TBH DPS Meter（TaskBarHero / 塔斯克巴·英雄 叠图）的版本更新与发布记录。',
-    keywords: 'TaskBarHero, Task Bar Hero, TBH, 塔斯克巴英雄, 任务栏英雄, TaskBarHero DPS, TaskBarHero 插件, TaskBarHero mod, DPS 计算, 伤害统计, 伤害量表, 刷图规划, 宝箱记录, 掉宝热力图, Steam 市场查价, BepInEx 插件',
+    keywords: '塔斯克巴·英雄, 塔斯克巴英雄, TaskBarHero, Task Bar Hero, TBH, 塔斯克巴·英雄 DPS, 塔斯克巴·英雄 插件, 塔斯克巴·英雄 伤害, TaskBarHero DPS, TaskBarHero mod, DPS 计算, 伤害统计, 伤害量表, 刷图规划, 宝箱记录, 掉宝热力图, Steam 市场查价, BepInEx 插件',
   },
   nav: { features: '功能', install: '安装', faq: '常见问题', download: '下载' },
   hero: {
