@@ -16,12 +16,13 @@ import farm from '../../assets/farm.png';
 import box from '../../assets/box.png';
 import boxopen from '../../assets/boxopen.png';
 import heatmap from '../../assets/heatmap.png';
+import price from '../../assets/price.png';
 export function getStaticPaths() {
   return LOCALES.filter((l) => l !== DEFAULT_LOCALE).map((locale) => ({ params: { locale } }));
 }
 const locale = Astro.params.locale as Locale;
 const dict = getDict(locale);
-const images = [hub, dps, taken, compare, farm, box, boxopen, heatmap];
+const images = [hub, dps, taken, compare, farm, box, boxopen, heatmap, price];
 ---
 <BaseLayout locale={locale} path="/" title={dict.meta.homeTitle} description={dict.meta.homeDesc} jsonLd>
   <Hero locale={locale} />

@@ -22,7 +22,7 @@ const en: Dict = {
   stats: { damageTypes: 'Damage types', panels: 'Analysis panels', languages: 'Languages', openSource: 'Open-source · read-only' },
   featuresKicker: 'Features',
   featuresTitle: 'Not just a number — a full combat dashboard',
-  featuresSub: 'Eight panels, each with one job. One keypress overlays them on the game, and clicks pass through so they never block play.',
+  featuresSub: 'Nine panels, each with one job. One keypress overlays them on the game, and clicks pass through so they never block play.',
   features: [
     {
       tag: 'F1 · Hub',
@@ -61,7 +61,7 @@ const en: Dict = {
       points: ['Total and boss-box counts', 'Boxes per hour', 'Timestamped log per stage'],
     },
     {
-      tag: 'F4 · Opens',
+      tag: 'F7 · Opens',
       title: 'Box-open quality stats',
       body: 'Break down every box you open into a quality × source matrix — how much Common through Transcendent, how much from normal vs boss boxes — with a line-by-line open log underneath.',
       points: ['Quality × box-kind matrix (count + %)', 'Common / Uncommon / Rare / Legendary / Transcendent split', 'Line-by-line log: time, box kind, quality, item'],
@@ -71,6 +71,12 @@ const en: Dict = {
       title: 'Loot heatmap',
       body: 'Flatten your box pickups and drops into a day × 24-hour heatmap to see your hottest windows, with a clear-time trend chart underneath that follows the stage selected in F11.',
       points: ['Two day×hour heatmaps: boxes obtained × drop rate', 'Hover any cell to see what you opened then', 'Clear-time trend chart, mirroring your F11 stage'],
+    },
+    {
+      tag: 'F4 · Prices',
+      title: 'Steam market price peek',
+      body: 'Hover any item — in your backpack, a reward popup, anywhere with a tooltip — to see its Steam Community Market price: 24h change, median, listings, 24h volume and a 7-day price curve. Right-click to pin the box to an item, then read each day straight off the curve.',
+      points: ['Live Steam price, 24h change, median & 24h volume', '7-day price curve — hover any point for that day', 'Right-click an item to pin; F4 to reposition the box'],
     },
   ],
   install: {

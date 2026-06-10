@@ -22,7 +22,7 @@ const es: Dict = {
   stats: { damageTypes: 'Tipos de daño', panels: 'Paneles de análisis', languages: 'Idiomas', openSource: 'Código abierto · solo lectura' },
   featuresKicker: 'Características',
   featuresTitle: 'No solo un número — un panel de combate completo',
-  featuresSub: 'Ocho paneles, cada uno con una función. Una tecla los superpone en el juego, y los clics pasan a través para no bloquear el juego.',
+  featuresSub: 'Nueve paneles, cada uno con una función. Una tecla los superpone en el juego, y los clics pasan a través para no bloquear el juego.',
   features: [
     {
       tag: 'F1 · Centro',
@@ -61,7 +61,7 @@ const es: Dict = {
       points: ['Total y cofres de jefe', 'Cofres por hora', 'Registro con marca de tiempo por etapa'],
     },
     {
-      tag: 'F4 · Aperturas',
+      tag: 'F7 · Aperturas',
       title: 'Estadísticas de calidad al abrir',
       body: 'Desglosa cada cofre que abres en una matriz de calidad × origen: cuánto de Común a Trascendente, cuánto de cofres normales vs de jefe, con un registro de aperturas línea por línea debajo.',
       points: ['Matriz calidad × tipo de cofre (conteo + %)', 'Reparto: Común / Poco común / Raro / Legendario / Trascendente', 'Registro línea por línea: hora, tipo de cofre, calidad, objeto'],
@@ -71,6 +71,12 @@ const es: Dict = {
       title: 'Mapa de calor de botín',
       body: 'Despliega tus cofres y botín en un mapa de calor de día × 24 horas para ver tus mejores franjas, con un gráfico de tendencia de tiempo de claro debajo que sigue la etapa seleccionada en F11.',
       points: ['Dos mapas de calor día×hora: cofres obtenidos × tasa de botín', 'Pasa el cursor por cualquier celda para ver qué abriste entonces', 'Gráfico de tendencia de tiempo de claro, sincronizado con tu etapa en F11'],
+    },
+    {
+      tag: 'F4 · Precios',
+      title: 'Precio del mercado de Steam',
+      body: 'Pasa el cursor sobre cualquier objeto —— en tu mochila, una ventana de recompensa, donde tenga tooltip —— para ver su precio en el Mercado de la Comunidad de Steam: cambio 24h, mediana, listados, volumen 24h y una curva de precios de 7 días. Haz clic derecho para fijar el cuadro a un objeto y lee cada día en la curva.',
+      points: ['Precio de Steam en vivo, cambio 24h, mediana y volumen 24h', 'Curva de precios de 7 días —— pasa el cursor por cualquier punto', 'Clic derecho en un objeto para fijar; F4 para reubicar el cuadro'],
     },
   ],
   install: {
