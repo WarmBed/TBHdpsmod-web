@@ -1,7 +1,7 @@
 export const SITE_URL = process.env.SITE_URL ?? 'https://tbhdspmeter.zeabur.app';
 export const GITHUB_OWNER = 'WarmBed';
 export const GITHUB_REPO = 'TBH-DPS-dashboard';
-export const LATEST_VERSION = 'v0.6.0';
+export const LATEST_VERSION = 'v0.8.2';
 export const DEFAULT_LOCALE = 'en' as const;
 export const LOCALES = ['en', 'zh-Hant', 'zh-Hans', 'ja', 'es'] as const;
 export type Locale = (typeof LOCALES)[number];
