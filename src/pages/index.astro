@@ -15,10 +15,13 @@ import farm from '../assets/farm.png';
 import box from '../assets/box.png';
 import boxopen from '../assets/boxopen.png';
 import heatmap from '../assets/heatmap.png';
-import price from '../assets/price.png';
+import priceBag from '../assets/price-bag.png';
+import priceCurve from '../assets/price.png';
 const locale = 'en' as const;
 const dict = getDict(locale);
-const images = [hub, dps, taken, compare, farm, box, boxopen, heatmap, price];
+const images = [hub, dps, taken, compare, farm, box, boxopen, heatmap, priceBag];
+const images2: (ImageMetadata | undefined)[] = [];
+images2[images.length - 1] = priceCurve;   // price card shows the backpack shot + a curve thumbnail
 ---
 <BaseLayout locale={locale} path="/" title={dict.meta.homeTitle} description={dict.meta.homeDesc} jsonLd>
   <Hero locale={locale} />
@@ -27,7 +30,7 @@ const images = [hub, dps, taken, compare, farm, box, boxopen, heatmap, price];
     <div class="kicker">{dict.featuresKicker}</div>
     <h2 class="h2">{dict.featuresTitle}</h2>
     <p class="sub">{dict.featuresSub}</p>
-    {dict.features.map((f, i) => <FeatureRow feature={f} image={images[i]} reversed={i % 2 === 1} />)}
+    {dict.features.map((f, i) => <FeatureRow feature={f} image={images[i]} image2={images2[i]} reversed={i % 2 === 1} />)}
   </div></section>
   <InstallSteps locale={locale} />
   <Faq locale={locale} />
