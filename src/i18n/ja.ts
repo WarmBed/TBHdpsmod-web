@@ -2,12 +2,13 @@ import type { Dict } from './types';
 
 const ja: Dict = {
   meta: {
-    homeTitle: 'TBH DPS Meter — タスクバーヒーロー リアルタイム DPS オーバーレイ',
-    homeDesc: 'タスクバーヒーロー（TBH / Task Bar Hero）向け無料オープンソースのゲーム内オーバーレイ。リアルタイム DPS、被ダメージ、ウェーブ別ステージ比較、個人ファーミングプランナー搭載。読み取り専用 — ゲーム値は一切変更しません。',
-    installTitle: 'インストール — TBH DPS Meter for TaskBarHero',
-    installDesc: 'TaskBarHero の TBH DPS Meter オーバーレイを3ステップでインストール。コンパイル不要。',
-    changelogTitle: 'チェンジログ — TBH DPS Meter',
-    changelogDesc: 'TBH DPS Meter（TaskBarHero オーバーレイ）のリリースノートとバージョン履歴。',
+    homeTitle: 'TBH DPS Meter — TaskBarHero ダメージ計・DPS オーバーレイ',
+    homeDesc: 'TaskBarHero（タスクバーヒーロー / Task Bar Hero / TBH）向け無料オープンソースのゲーム内オーバーレイ。リアルタイム DPS、被ダメージ、ウェーブ別ステージ比較、ファーミングプランナー、宝箱ログ、ドロップ分布、Steam マーケット価格チェック搭載。読み取り専用 — ゲーム値は一切変更しません。',
+    installTitle: 'インストール — TaskBarHero 用 TBH DPS Meter',
+    installDesc: 'TaskBarHero（Task Bar Hero）の TBH DPS Meter オーバーレイ（BepInEx プラグイン）を3ステップでインストール。コンパイル不要。',
+    changelogTitle: 'チェンジログ — TBH DPS Meter（TaskBarHero）',
+    changelogDesc: 'TBH DPS Meter（TaskBarHero / タスクバーヒーロー オーバーレイ）のリリースノートとバージョン履歴。',
+    keywords: 'TaskBarHero, Task Bar Hero, TBH, タスクバーヒーロー, TaskBarHero DPS, TaskBarHero Mod, TaskBarHero オーバーレイ, DPS メーター, ダメージ計, ダメージ統計, ファーミングプランナー, ドロップ分布, Steam マーケット価格, BepInEx Mod',
   },
   nav: { features: '機能', install: 'インストール', faq: 'よくある質問', download: 'ダウンロード' },
   hero: {

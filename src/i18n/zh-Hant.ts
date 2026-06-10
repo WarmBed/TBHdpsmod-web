@@ -2,12 +2,13 @@ import type { Dict } from './types';
 
 const zhHant: Dict = {
   meta: {
-    homeTitle: 'TBH DPS Meter — 塔斯克巴·英雄 即時 DPS 疊圖',
-    homeDesc: '免費開源的 塔斯克巴·英雄（TBH / Task Bar Hero）遊戲內疊圖：即時 DPS、承受傷害、關卡逐波比較與個人化刷圖規劃。只讀資料，絕不修改遊戲數值。',
-    installTitle: 'TaskBarHero 安裝教學 — TBH DPS Meter',
-    installDesc: '三步驟安裝 TaskBarHero 的 TBH DPS Meter 疊圖，免編譯。',
-    changelogTitle: '更新日誌 — TBH DPS Meter',
-    changelogDesc: 'TBH DPS Meter（TaskBarHero 疊圖）的版本更新與發佈紀錄。',
+    homeTitle: 'TBH DPS Meter — TaskBarHero 傷害量表 / DPS 疊圖',
+    homeDesc: '免費開源的 TaskBarHero（塔斯克巴·英雄 / Task Bar Hero / TBH）遊戲內疊圖：即時 DPS、承受傷害、關卡逐波比較、刷圖規劃、寶箱記錄、掉寶熱力圖與 Steam 市集查價。只讀資料，絕不修改遊戲數值。',
+    installTitle: 'TaskBarHero 安裝教學 — TBH DPS Meter 傷害疊圖',
+    installDesc: '三步驟安裝 TaskBarHero（Task Bar Hero）的 TBH DPS Meter 疊圖（BepInEx 外掛），免編譯。',
+    changelogTitle: '更新日誌 — TBH DPS Meter（TaskBarHero）',
+    changelogDesc: 'TBH DPS Meter（TaskBarHero / 塔斯克巴·英雄 疊圖）的版本更新與發佈紀錄。',
+    keywords: 'TaskBarHero, Task Bar Hero, TBH, 塔斯克巴英雄, 任務欄英雄, TaskBarHero DPS, TaskBarHero 外掛, TaskBarHero mod, DPS 計算, 傷害統計, 傷害量表, 刷圖規劃, 寶箱記錄, 掉寶熱力圖, Steam 市集查價, BepInEx 外掛',
   },
   nav: { features: '功能', install: '安裝', faq: '常見問題', download: '下載' },
   hero: {

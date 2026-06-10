@@ -1,6 +1,6 @@
 export interface Dict {
   meta: { homeTitle: string; homeDesc: string; installTitle: string; installDesc: string;
-          changelogTitle: string; changelogDesc: string };
+          changelogTitle: string; changelogDesc: string; keywords: string };
   nav: { features: string; install: string; faq: string; download: string };
   hero: { eyebrow: string; titleA: string; titleHighlight: string; lede: string;
           ctaDownload: string; ctaGithub: string;

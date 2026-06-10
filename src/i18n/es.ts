@@ -2,12 +2,13 @@ import type { Dict } from './types';
 
 const es: Dict = {
   meta: {
-    homeTitle: 'TBH DPS Meter — Overlay de DPS en tiempo real para Task Bar Hero (TBH)',
-    homeDesc: 'Overlay en el juego gratuito y de código abierto para Task Bar Hero (TBH / TaskBarHero). DPS en vivo, daño recibido, comparación de etapas por oleada y planificador de farmeo personalizado. Solo lectura — nunca modifica los valores del juego.',
-    installTitle: 'Instalación — TBH DPS Meter para TaskBarHero',
-    installDesc: 'Instala el overlay TBH DPS Meter para TaskBarHero en tres pasos. Sin compilación.',
-    changelogTitle: 'Registro de cambios — TBH DPS Meter',
-    changelogDesc: 'Notas de versión e historial de lanzamientos del overlay TBH DPS Meter para TaskBarHero.',
+    homeTitle: 'TBH DPS Meter — Medidor de DPS y daño para TaskBarHero',
+    homeDesc: 'Overlay en el juego gratuito y de código abierto para TaskBarHero (Task Bar Hero / TBH). DPS en vivo, daño recibido, comparación de etapas por oleada, planificador de farmeo, registro de cofres, mapa de calor de botín y consulta de precios del mercado de Steam. Solo lectura — nunca modifica los valores del juego.',
+    installTitle: 'Instalación — TBH DPS Meter para TaskBarHero (Task Bar Hero)',
+    installDesc: 'Instala el overlay TBH DPS Meter (plugin de BepInEx) para TaskBarHero / Task Bar Hero en tres pasos. Sin compilación.',
+    changelogTitle: 'Registro de cambios — TBH DPS Meter (TaskBarHero)',
+    changelogDesc: 'Notas de versión e historial de lanzamientos del overlay TBH DPS Meter para TaskBarHero (Task Bar Hero).',
+    keywords: 'TaskBarHero, Task Bar Hero, TBH, TaskBarHero DPS, TaskBarHero mod, overlay TaskBarHero, medidor de DPS, medidor de daño, daño recibido, planificador de farmeo, mapa de calor de botín, precio mercado Steam, plugin BepInEx, IL2CPP',
   },
   nav: { features: 'Características', install: 'Instalar', faq: 'Preguntas frecuentes', download: 'Descargar' },
   hero: {

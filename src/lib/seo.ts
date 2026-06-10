@@ -26,10 +26,10 @@ export function hreflangLinks(siteUrl: string, path: string): HreflangLink[] {
 export interface SoftwareAppJsonLd { '@context': string; '@type': string; name: string;
   applicationCategory: string; operatingSystem: string; softwareVersion: string;
   offers: { '@type': string; price: string; priceCurrency: string };
-  license: string; screenshot: string[]; }
+  license: string; screenshot: string[]; keywords?: string; }
 
 export function softwareAppJsonLd(opts: {
-  name: string; version: string; screenshots: string[];
+  name: string; version: string; screenshots: string[]; keywords?: string;
 }): SoftwareAppJsonLd {
   return {
     '@context': 'https://schema.org', '@type': 'SoftwareApplication',
@@ -37,5 +37,6 @@ export function softwareAppJsonLd(opts: {
     softwareVersion: opts.version,
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     license: 'https://opensource.org/licenses/MIT', screenshot: opts.screenshots,
+    ...(opts.keywords ? { keywords: opts.keywords } : {}),
   };
 }
