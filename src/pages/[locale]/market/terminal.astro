@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../../components/BaseLayout.astro';
+import MarketTerminal from '../../../components/MarketTerminal.astro';
+import { LOCALES, DEFAULT_LOCALE, type Locale } from '../../../config';
+
+export function getStaticPaths() {
+  return LOCALES.filter((l) => l !== DEFAULT_LOCALE).map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
+
+const META: Record<Locale, { title: string; desc: string }> = {
+  en: { title: 'TBH Terminal — live TaskBarHero market charts', desc: 'Futu-style multi-chart terminal for TaskBarHero items.' },
+  'zh-Hant': { title: 'TBH Terminal — 塔斯克巴·英雄即時行情圖表', desc: '富途式多圖行情終端:K線+MA/BOLL、成交量、五檔掛單簿、即時自選清單。' },
+  'zh-Hans': { title: 'TBH Terminal — 塔斯克巴·英雄实时行情图表', desc: '富途式多图行情终端:K线+MA/BOLL、成交量、五档挂单簿、实时自选列表。' },
+  ja: { title: 'TBH Terminal — TaskBarHero リアルタイム相場チャート', desc: 'Futu風マルチチャート端末:ローソク足+MA/BOLL、出来高、板情報、リアルタイムウォッチリスト。' },
+  es: { title: 'TBH Terminal — gráficos de mercado de TaskBarHero en vivo', desc: 'Terminal multigráfico estilo Futu: velas + MA/BOLL, volumen, libro de órdenes y lista de seguimiento en vivo.' },
+};
+const m = META[locale];
+---
+<BaseLayout locale={locale} path="/market/terminal" title={m.title} description={m.desc}>
+  <MarketTerminal locale={locale} />
+</BaseLayout>
