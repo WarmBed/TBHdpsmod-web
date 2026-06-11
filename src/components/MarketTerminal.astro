@@ -5,11 +5,11 @@ const { locale } = Astro.props;
 
 type T = Record<string, string>;
 const STRINGS: Record<Locale, T> = {
-  en: { search: 'Search watchlist…', name: 'Name', lastChg: 'Last / Chg', price: 'Price', chg: 'Chg', line: 'Line', candle: 'Candle', items: 'items', live: 'live', demo: 'demo', ago: 'ago', loading: 'Loading…', noMatch: 'No match', clickItem: 'Click a watchlist item →', open: 'Open', high: 'High', low: 'Low', median: 'Median', vol24: '24h vol', listings: 'Listings', orderBook: 'Order book', noOrderBook: 'No order book', noHistory: 'No price history', loadFail: 'Load failed', medianSale: 'median sale price', theme: 'Toggle theme' },
-  'zh-Hant': { search: '搜尋物品…', name: '名稱', lastChg: '現價/漲跌', price: '現價', chg: '漲跌', line: '分時', candle: '日K', items: '個', live: '即時', demo: '範例', ago: '前', loading: '載入中…', noMatch: '無符合', clickItem: '點左側物品 →', open: '開', high: '高', low: '低', median: '中位', vol24: '24h量', listings: '在售', orderBook: '掛單簿', noOrderBook: '無掛單', noHistory: '無歷史', loadFail: '載入失敗', medianSale: '中位成交價', theme: '切換深淺色' },
-  'zh-Hans': { search: '搜索物品…', name: '名称', lastChg: '现价/涨跌', price: '现价', chg: '涨跌', line: '分时', candle: '日K', items: '个', live: '实时', demo: '示例', ago: '前', loading: '加载中…', noMatch: '无匹配', clickItem: '点左侧物品 →', open: '开', high: '高', low: '低', median: '中位', vol24: '24h量', listings: '在售', orderBook: '挂单簿', noOrderBook: '无挂单', noHistory: '无历史', loadFail: '加载失败', medianSale: '中位成交价', theme: '切换深浅色' },
-  ja: { search: 'アイテム検索…', name: '名前', lastChg: '価格/変動', price: '価格', chg: '変動', line: '時系列', candle: '日足', items: '件', live: 'リアル', demo: 'デモ', ago: '前', loading: '読み込み中…', noMatch: '該当なし', clickItem: '左のアイテムを選択 →', open: '始', high: '高', low: '安', median: '中央', vol24: '24h量', listings: '出品', orderBook: '板情報', noOrderBook: '板なし', noHistory: '履歴なし', loadFail: '読み込み失敗', medianSale: '中央販売価格', theme: 'テーマ切替' },
-  es: { search: 'Buscar objetos…', name: 'Nombre', lastChg: 'Precio/Cambio', price: 'Precio', chg: 'Cambio', line: 'Línea', candle: 'Velas', items: 'objetos', live: 'vivo', demo: 'demo', ago: 'atrás', loading: 'Cargando…', noMatch: 'Sin resultados', clickItem: 'Selecciona un objeto →', open: 'Apert', high: 'Máx', low: 'Mín', median: 'Mediana', vol24: 'Vol 24h', listings: 'Ofertas', orderBook: 'Libro', noOrderBook: 'Sin libro', noHistory: 'Sin historial', loadFail: 'Error al cargar', medianSale: 'precio mediano', theme: 'Tema' },
+  en: { search: 'Search watchlist…', name: 'Name', lastChg: 'Last / Chg', price: 'Price', chg: 'Chg', line: 'Line', candle: 'Candle', items: 'items', live: 'live', demo: 'demo', ago: 'ago', loading: 'Loading…', noMatch: 'No match', clickItem: 'Click a watchlist item →', open: 'Open', high: 'High', low: 'Low', median: 'Median', vol24: '24h vol', listings: 'Listings', orderBook: 'Order book', noOrderBook: 'No order book', noHistory: 'No price history', loadFail: 'Load failed', medianSale: 'median sale price', theme: 'Toggle theme', buySteam: 'Buy on Steam Market' },
+  'zh-Hant': { search: '搜尋物品…', name: '名稱', lastChg: '現價/漲跌', price: '現價', chg: '漲跌', line: '分時', candle: '日K', items: '個', live: '即時', demo: '範例', ago: '前', loading: '載入中…', noMatch: '無符合', clickItem: '點左側物品 →', open: '開', high: '高', low: '低', median: '中位', vol24: '24h量', listings: '在售', orderBook: '掛單簿', noOrderBook: '無掛單', noHistory: '無歷史', loadFail: '載入失敗', medianSale: '中位成交價', theme: '切換深淺色', buySteam: '前往 Steam 市集購買' },
+  'zh-Hans': { search: '搜索物品…', name: '名称', lastChg: '现价/涨跌', price: '现价', chg: '涨跌', line: '分时', candle: '日K', items: '个', live: '实时', demo: '示例', ago: '前', loading: '加载中…', noMatch: '无匹配', clickItem: '点左侧物品 →', open: '开', high: '高', low: '低', median: '中位', vol24: '24h量', listings: '在售', orderBook: '挂单簿', noOrderBook: '无挂单', noHistory: '无历史', loadFail: '加载失败', medianSale: '中位成交价', theme: '切换深浅色', buySteam: '前往 Steam 市集购买' },
+  ja: { search: 'アイテム検索…', name: '名前', lastChg: '価格/変動', price: '価格', chg: '変動', line: '時系列', candle: '日足', items: '件', live: 'リアル', demo: 'デモ', ago: '前', loading: '読み込み中…', noMatch: '該当なし', clickItem: '左のアイテムを選択 →', open: '始', high: '高', low: '安', median: '中央', vol24: '24h量', listings: '出品', orderBook: '板情報', noOrderBook: '板なし', noHistory: '履歴なし', loadFail: '読み込み失敗', medianSale: '中央販売価格', theme: 'テーマ切替', buySteam: 'Steamマーケットで購入' },
+  es: { search: 'Buscar objetos…', name: 'Nombre', lastChg: 'Precio/Cambio', price: 'Precio', chg: 'Cambio', line: 'Línea', candle: 'Velas', items: 'objetos', live: 'vivo', demo: 'demo', ago: 'atrás', loading: 'Cargando…', noMatch: 'Sin resultados', clickItem: 'Selecciona un objeto →', open: 'Apert', high: 'Máx', low: 'Mín', median: 'Mediana', vol24: 'Vol 24h', listings: 'Ofertas', orderBook: 'Libro', noOrderBook: 'Sin libro', noHistory: 'Sin historial', loadFail: 'Error al cargar', medianSale: 'precio mediano', theme: 'Tema', buySteam: 'Comprar en el Mercado de Steam' },
 };
 const T = STRINGS[locale];
 const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
@@ -152,6 +152,8 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     return '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '"><path d="' + area + '" fill="' + (up ? UPF : DNF) + '"/><polyline points="' + pts.join(' ') + '" fill="none" stroke="' + col + '" stroke-width="1.2"/></svg>';
   }
 
+  var STEAM_MARKET = 'https://steamcommunity.com/market/listings/3678970/';
+  function steamUrl(hash) { return STEAM_MARKET + encodeURIComponent(hash); }
   function dispName(it) { return (it.names && it.names[LOCALE]) || it.name; }
   function rarityOf(hash) { var m = /\(([^)]+)\)/.exec(hash); return m ? m[1] : ''; }
   function icon(it, size) { return it && it.icon ? '<img class="ic" loading="lazy" src="https://community.fastly.steamstatic.com/economy/image/' + it.icon + '/' + size + '" alt="">' : ''; }
@@ -235,7 +237,9 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
       '<div class="p-head">' +
         '<div class="p-ic">' + icon(it, '62fx62f') + '</div>' +
         '<div class="p-id"><div class="p-l1"><span class="p-name" style="color:' + nameColor(it.color) + '">' + dispName(it) + '</span>' +
-        (rar ? '<span class="p-rar">' + rar + '</span>' : '') + '</div>' +
+        (rar ? '<span class="p-rar">' + rar + '</span>' : '') +
+        '<a class="p-steam" href="' + steamUrl(hash) + '" target="_blank" rel="noopener" title="' + T.buySteam + '">' +
+        '<svg viewBox="0 0 16 16" width="10" height="10" aria-hidden="true"><path d="M9 1h6v6h-1.6V3.7L7.1 10 6 8.9l6.3-6.3H9V1ZM2 3h5v1.6H3.6v8.8h8.8V10H14v5H2V3Z" fill="currentColor"/></svg>Steam</a></div>' +
         '<div class="p-quote"><span class="p-price num ' + c + '">' + money(it.price) + '</span>' +
         '<span class="p-chip ' + c + '">' + (p === null ? '' : sg + p.toFixed(2) + '%') + '</span></div></div>' +
         '<button class="p-close" title="clear">×</button>' +
@@ -536,6 +540,8 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
 .p-id{min-width:0;flex:1}.p-l1{display:flex;align-items:center;gap:6px}
 .p-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .p-rar{font-size:9.5px;color:var(--mut);border:1px solid var(--ln);border-radius:4px;padding:0 4px;flex-shrink:0}
+.p-steam{display:inline-flex;align-items:center;gap:3px;font-size:9.5px;font-weight:600;color:var(--mut);border:1px solid var(--ln);border-radius:4px;padding:0 5px;flex-shrink:0;text-decoration:none;line-height:15px}
+.p-steam:hover{color:var(--ink);border-color:var(--mut)}
 .p-quote{display:flex;align-items:baseline;gap:6px}
 .p-price{font-size:15px;font-weight:700}
 .p-chip{font-size:10.5px;font-weight:600;font-variant-numeric:tabular-nums;border-radius:4px;padding:1px 5px}
