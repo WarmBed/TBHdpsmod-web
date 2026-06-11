@@ -6,10 +6,10 @@ const { locale } = Astro.props;
 type T = Record<string, string>;
 const STRINGS: Record<Locale, T> = {
   en: { search: 'Search watchlist…', name: 'Name', lastChg: 'Last / Chg', price: 'Price', chg: 'Chg', line: 'Line', candle: 'Candle', items: 'items', live: 'live', demo: 'demo', ago: 'ago', loading: 'Loading…', noMatch: 'No match', clickItem: 'Click a watchlist item →', open: 'Open', high: 'High', low: 'Low', median: 'Median', vol24: '24h vol', listings: 'Listings', orderBook: 'Order book', noOrderBook: 'No order book', noHistory: 'No price history', loadFail: 'Load failed', medianSale: 'median sale price', theme: 'Toggle theme' },
-  'zh-Hant': { search: '搜尋物品…', name: '名稱', lastChg: '現價/漲跌', line: '分時', candle: '日K', items: '個', live: '即時', demo: '範例', ago: '前', loading: '載入中…', noMatch: '無符合', clickItem: '點左側物品 →', open: '開', high: '高', low: '低', median: '中位', vol24: '24h量', listings: '在售', orderBook: '掛單簿', noOrderBook: '無掛單', noHistory: '無歷史', loadFail: '載入失敗', medianSale: '中位成交價', theme: '切換深淺色' },
-  'zh-Hans': { search: '搜索物品…', name: '名称', lastChg: '现价/涨跌', line: '分时', candle: '日K', items: '个', live: '实时', demo: '示例', ago: '前', loading: '加载中…', noMatch: '无匹配', clickItem: '点左侧物品 →', open: '开', high: '高', low: '低', median: '中位', vol24: '24h量', listings: '在售', orderBook: '挂单簿', noOrderBook: '无挂单', noHistory: '无历史', loadFail: '加载失败', medianSale: '中位成交价', theme: '切换深浅色' },
-  ja: { search: 'アイテム検索…', name: '名前', lastChg: '価格/変動', line: '時系列', candle: '日足', items: '件', live: 'リアル', demo: 'デモ', ago: '前', loading: '読み込み中…', noMatch: '該当なし', clickItem: '左のアイテムを選択 →', open: '始', high: '高', low: '安', median: '中央', vol24: '24h量', listings: '出品', orderBook: '板情報', noOrderBook: '板なし', noHistory: '履歴なし', loadFail: '読み込み失敗', medianSale: '中央販売価格', theme: 'テーマ切替' },
-  es: { search: 'Buscar objetos…', name: 'Nombre', lastChg: 'Precio/Cambio', line: 'Línea', candle: 'Velas', items: 'objetos', live: 'vivo', demo: 'demo', ago: 'atrás', loading: 'Cargando…', noMatch: 'Sin resultados', clickItem: 'Selecciona un objeto →', open: 'Apert', high: 'Máx', low: 'Mín', median: 'Mediana', vol24: 'Vol 24h', listings: 'Ofertas', orderBook: 'Libro', noOrderBook: 'Sin libro', noHistory: 'Sin historial', loadFail: 'Error al cargar', medianSale: 'precio mediano', theme: 'Tema' },
+  'zh-Hant': { search: '搜尋物品…', name: '名稱', lastChg: '現價/漲跌', price: '現價', chg: '漲跌', line: '分時', candle: '日K', items: '個', live: '即時', demo: '範例', ago: '前', loading: '載入中…', noMatch: '無符合', clickItem: '點左側物品 →', open: '開', high: '高', low: '低', median: '中位', vol24: '24h量', listings: '在售', orderBook: '掛單簿', noOrderBook: '無掛單', noHistory: '無歷史', loadFail: '載入失敗', medianSale: '中位成交價', theme: '切換深淺色' },
+  'zh-Hans': { search: '搜索物品…', name: '名称', lastChg: '现价/涨跌', price: '现价', chg: '涨跌', line: '分时', candle: '日K', items: '个', live: '实时', demo: '示例', ago: '前', loading: '加载中…', noMatch: '无匹配', clickItem: '点左侧物品 →', open: '开', high: '高', low: '低', median: '中位', vol24: '24h量', listings: '在售', orderBook: '挂单簿', noOrderBook: '无挂单', noHistory: '无历史', loadFail: '加载失败', medianSale: '中位成交价', theme: '切换深浅色' },
+  ja: { search: 'アイテム検索…', name: '名前', lastChg: '価格/変動', price: '価格', chg: '変動', line: '時系列', candle: '日足', items: '件', live: 'リアル', demo: 'デモ', ago: '前', loading: '読み込み中…', noMatch: '該当なし', clickItem: '左のアイテムを選択 →', open: '始', high: '高', low: '安', median: '中央', vol24: '24h量', listings: '出品', orderBook: '板情報', noOrderBook: '板なし', noHistory: '履歴なし', loadFail: '読み込み失敗', medianSale: '中央販売価格', theme: 'テーマ切替' },
+  es: { search: 'Buscar objetos…', name: 'Nombre', lastChg: 'Precio/Cambio', price: 'Precio', chg: 'Cambio', line: 'Línea', candle: 'Velas', items: 'objetos', live: 'vivo', demo: 'demo', ago: 'atrás', loading: 'Cargando…', noMatch: 'Sin resultados', clickItem: 'Selecciona un objeto →', open: 'Apert', high: 'Máx', low: 'Mín', median: 'Mediana', vol24: 'Vol 24h', listings: 'Ofertas', orderBook: 'Libro', noOrderBook: 'Sin libro', noHistory: 'Sin historial', loadFail: 'Error al cargar', medianSale: 'precio mediano', theme: 'Tema' },
 };
 const T = STRINGS[locale];
 const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
@@ -41,7 +41,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   </div>
   <div class="term-body">
     <aside class="term-watch">
-      <div class="wl-head"><span>{T.name}</span><span>{T.lastChg}</span></div>
+      <div class="wl-head"><span class="wl-s" data-s="name">{T.name}</span><span><span class="wl-s" data-s="price">{T.price}</span> / <span class="wl-s" data-s="chg">{T.chg}</span></span></div>
       <div id="t-watch" class="wl-list"><div class="wl-loading">{T.loading}</div></div>
     </aside>
     <div id="t-grid" class="term-grid" data-layout="4"></div>
@@ -53,7 +53,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   var UP = '#26d07c', DOWN = '#f0616d', UPF = 'rgba(38,208,124,.13)', DNF = 'rgba(240,97,109,.13)';
   var MA = [{ p: 5, c: '#e6e8ec' }, { p: 10, c: '#f5b942' }, { p: 30, c: '#c66bd6' }];
   var BOLLC = { mid: '#e6e8ec', band: '#3aa0e0' };
-  var fix = null, panels = [null, null, null, null], active = 0, layout = '4', tf = 240, showMA = true, showBOLL = true;
+  var fix = null, panels = [null, null, null, null], active = 0, layout = '4', tf = 240, showMA = true, showBOLL = true, sortKey = 'vol', sortDir = -1;
   var $ = function (id) { return document.getElementById(id); };
   var termEl = document.querySelector('.term');
   function cvar(n) { return getComputedStyle(termEl).getPropertyValue(n).trim(); }
@@ -137,8 +137,18 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
 
   function renderWatch() {
     var q = ($('t-search').value || '').toLowerCase();
-    var rows = fix.list.filter(function (it) { return it.name.toLowerCase().indexOf(q) >= 0; })
-      .sort(function (a, b) { return b.vol - a.vol; });
+    var rows = fix.list.filter(function (it) { return it.name.toLowerCase().indexOf(q) >= 0; });
+    rows.sort(function (a, b) {
+      if (sortKey === 'name') return sortDir * a.name.localeCompare(b.name);
+      var av, bv;
+      if (sortKey === 'price') { av = a.price; bv = b.price; }
+      else if (sortKey === 'chg') { av = (a.chg == null ? -1e9 : a.chg); bv = (b.chg == null ? -1e9 : b.chg); }
+      else { av = a.vol; bv = b.vol; }
+      return sortDir * (av - bv);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.wl-s'), function (s) {
+      var on = s.getAttribute('data-s') === sortKey; s.classList.toggle('act', on); s.classList.toggle('asc', on && sortDir > 0);
+    });
     $('t-watch').innerHTML = rows.slice(0, 200).map(function (it) {
       var p = (it.chg != null ? it.chg : null), c = pctClass(p), sg = p >= 0 ? '+' : '';
       return '<div class="wl-row" data-hash="' + encodeURIComponent(it.hash) + '">' +
@@ -349,6 +359,13 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   })();
 
   $('t-search').addEventListener('input', renderWatch);
+  Array.prototype.forEach.call(document.querySelectorAll('.wl-s'), function (s) {
+    s.addEventListener('click', function () {
+      var k = s.getAttribute('data-s');
+      if (sortKey === k) sortDir = -sortDir; else { sortKey = k; sortDir = (k === 'name' ? 1 : -1); }
+      if (fix) renderWatch();
+    });
+  });
   Array.prototype.forEach.call(document.querySelectorAll('#t-tf button'), function (b) {
     b.addEventListener('click', function () { document.querySelectorAll('#t-tf button').forEach(function (x) { x.classList.remove('on'); }); b.classList.add('on'); tf = parseInt(b.getAttribute('data-tf'), 10); renderGrid(); });
   });
@@ -421,6 +438,8 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
 .term-body{display:flex;height:calc(100vh - 64px - 53px)}
 .term-watch{width:288px;flex-shrink:0;border-right:1px solid var(--ln);background:var(--p2);display:flex;flex-direction:column;overflow:hidden}
 .wl-head{display:flex;justify-content:space-between;padding:8px 14px;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--ln)}
+.wl-s{cursor:pointer;user-select:none}.wl-s:hover{color:var(--mut)}.wl-s.act{color:var(--ink)}
+.wl-s.act::after{content:'▾';font-size:8px;margin-left:1px}.wl-s.act.asc::after{content:'▴'}
 .wl-list{overflow-y:auto;flex:1}
 .wl-loading{padding:20px;color:var(--dim);font-size:13px;text-align:center}
 .wl-row{display:flex;align-items:center;gap:7px;padding:5px 10px;border-bottom:1px solid var(--rowln);cursor:pointer}
