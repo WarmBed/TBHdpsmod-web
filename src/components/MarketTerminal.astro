@@ -48,7 +48,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   </div>
 </section>
 
-<script is:inline define:vars={{ T, RAW }}>
+<script is:inline define:vars={{ T, RAW, LOCALE: locale }}>
 (function () {
   var UP = '#26d07c', DOWN = '#f0616d', UPF = 'rgba(38,208,124,.13)', DNF = 'rgba(240,97,109,.13)';
   var MA = [{ p: 5, c: '#e6e8ec' }, { p: 10, c: '#f5b942' }, { p: 30, c: '#c66bd6' }];
@@ -121,6 +121,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     return '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '"><path d="' + area + '" fill="' + (up ? UPF : DNF) + '"/><polyline points="' + pts.join(' ') + '" fill="none" stroke="' + col + '" stroke-width="1.2"/></svg>';
   }
 
+  function dispName(it) { return (it.names && it.names[LOCALE]) || it.name; }
   function rarityOf(hash) { var m = /\(([^)]+)\)/.exec(hash); return m ? m[1] : ''; }
   function icon(it, size) { return it && it.icon ? '<img class="ic" loading="lazy" src="https://community.fastly.steamstatic.com/economy/image/' + it.icon + '/' + size + '" alt="">' : ''; }
   // Steam rarity colors are tuned for a dark bg; clamp luminance so names stay readable in either theme.
@@ -137,7 +138,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
 
   function renderWatch() {
     var q = ($('t-search').value || '').toLowerCase();
-    var rows = fix.list.filter(function (it) { return it.name.toLowerCase().indexOf(q) >= 0; });
+    var rows = fix.list.filter(function (it) { return it.name.toLowerCase().indexOf(q) >= 0 || dispName(it).toLowerCase().indexOf(q) >= 0; });
     rows.sort(function (a, b) {
       if (sortKey === 'name') return sortDir * a.name.localeCompare(b.name);
       var av, bv;
@@ -153,7 +154,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
       var p = (it.chg != null ? it.chg : null), c = pctClass(p), sg = p >= 0 ? '+' : '';
       return '<div class="wl-row" data-hash="' + encodeURIComponent(it.hash) + '">' +
         '<div class="wl-ic">' + icon(it, '48fx48f') + '</div>' +
-        '<div class="wl-l"><div class="wl-name" style="color:' + nameColor(it.color) + '">' + it.name + '</div>' +
+        '<div class="wl-l"><div class="wl-name" style="color:' + nameColor(it.color) + '">' + dispName(it) + '</div>' +
         '<div class="wl-tk">' + (rarityOf(it.hash) || it.type || '') + '</div></div>' +
         '<div class="wl-spark">' + (it.spark ? spark(it.spark, 58, 22) : '') + '</div>' +
         '<div class="wl-r"><div class="wl-price num ' + c + '">' + money(it.price) + '</div>' +
@@ -196,7 +197,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     el.innerHTML =
       '<div class="p-head">' +
         '<div class="p-ic">' + icon(it, '62fx62f') + '</div>' +
-        '<div class="p-id"><div class="p-l1"><span class="p-name" style="color:' + nameColor(it.color) + '">' + it.name + '</span>' +
+        '<div class="p-id"><div class="p-l1"><span class="p-name" style="color:' + nameColor(it.color) + '">' + dispName(it) + '</span>' +
         (rar ? '<span class="p-rar">' + rar + '</span>' : '') + '</div>' +
         '<div class="p-quote"><span class="p-price num ' + c + '">' + money(it.price) + '</span>' +
         '<span class="p-chip ' + c + '">' + (p === null ? '' : sg + p.toFixed(2) + '%') + '</span></div></div>' +
