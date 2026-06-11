@@ -368,12 +368,14 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   --bg:#0a0e15;--p:#0e131c;--p2:#0b0f17;--ln:#1b2431;--ink:#e7ecf3;--mut:#8b97a8;--dim:#586273;
   --hover:#121a26;--rowln:#111824;--tile:#0c1119;--on:#1c2838;--activeoutline:#2c4a6e;--statbg:#0c1119;
   --grid:#161f2b;--axis:#5d6878;--ma5:#e6e8ec;--tipbg:#0c1622;--cross:#7c8aa0;
+  --chipUpBg:#1f8a55;--chipUpFg:#fff;--chipDnBg:#b53b46;--chipDnFg:#fff;
   background:var(--bg);color:var(--ink);min-height:calc(100vh - 64px);
   font-family:'Inter',-apple-system,'Segoe UI',system-ui,sans-serif}
 .term[data-theme="light"]{
   --bg:#ffffff;--p:#f4f6fa;--p2:#fafbfd;--ln:#e4e7ee;--ink:#0d1117;--mut:#525c6b;--dim:#7e8794;
   --hover:#f1f4f9;--rowln:#eef0f5;--tile:#f1f3f8;--on:#e5eaf2;--activeoutline:#9bb9dd;--statbg:#f7f8fb;
-  --grid:#edf0f4;--axis:#9aa3b0;--ma5:#2c2c2a;--tipbg:#ffffff;--cross:#8b97a8}
+  --grid:#edf0f4;--axis:#9aa3b0;--ma5:#2c2c2a;--tipbg:#ffffff;--cross:#8b97a8;
+  --chipUpBg:#e1f3e9;--chipUpFg:#15793f;--chipDnBg:#fbe3e5;--chipDnFg:#bb2f3d}
 .term .num{font-variant-numeric:tabular-nums;font-feature-settings:'tnum' 1;letter-spacing:.1px}
 .term-top{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--ln);background:var(--p2);position:sticky;top:64px;z-index:5}
 .term-brand{font-size:15px;font-weight:800;letter-spacing:-.3px}.term-brand .ta{color:var(--accent)}
@@ -400,8 +402,10 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
 .wl-spark{width:50px;flex-shrink:0;height:22px}
 .wl-r{text-align:right;flex-shrink:0;width:66px}
 .wl-price{font-size:12.5px}
-.wl-chip{font-size:11px;font-weight:600;font-variant-numeric:tabular-nums;border-radius:4px;padding:1px 0;margin-top:2px;color:#fff}
-.wl-chip.up{background:#1f8a55}.wl-chip.down{background:#b53b46}.wl-chip:not(.up):not(.down){background:#39424f}
+.wl-chip{font-size:11px;font-weight:600;font-variant-numeric:tabular-nums;border-radius:4px;padding:1px 0;margin-top:2px}
+.wl-chip.up,.p-chip.up{background:var(--chipUpBg);color:var(--chipUpFg)}
+.wl-chip.down,.p-chip.down{background:var(--chipDnBg);color:var(--chipDnFg)}
+.wl-chip:not(.up):not(.down){background:var(--ln);color:var(--mut)}
 .up{color:#26d07c}.down{color:#f0616d}
 .wl-price.up{color:#26d07c}.wl-price.down{color:#f0616d}
 
@@ -418,8 +422,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
 .p-rar{font-size:9.5px;color:var(--mut);border:1px solid var(--ln);border-radius:4px;padding:0 4px;flex-shrink:0}
 .p-quote{display:flex;align-items:baseline;gap:6px}
 .p-price{font-size:15px;font-weight:700}
-.p-chip{font-size:10.5px;font-weight:600;font-variant-numeric:tabular-nums;color:#fff;border-radius:4px;padding:1px 5px}
-.p-chip.up{background:#1f8a55}.p-chip.down{background:#b53b46}
+.p-chip{font-size:10.5px;font-weight:600;font-variant-numeric:tabular-nums;border-radius:4px;padding:1px 5px}
 .p-close{background:none;border:none;color:var(--dim);font-size:17px;line-height:1;cursor:pointer;padding:0 2px}.p-close:hover{color:var(--ink)}
 .p-statbar{display:flex;flex-wrap:nowrap;gap:0 12px;padding:3px 10px;border-bottom:1px solid var(--ln);background:var(--statbg);overflow:hidden}
 .hs{display:flex;gap:4px;align-items:baseline;font-size:10.5px;white-space:nowrap}.hs i{color:var(--dim);font-style:normal}.hs b{font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
