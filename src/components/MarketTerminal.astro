@@ -105,6 +105,17 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
 
   function rarityOf(hash) { var m = /\(([^)]+)\)/.exec(hash); return m ? m[1] : ''; }
   function icon(it, size) { return it && it.icon ? '<img class="ic" loading="lazy" src="https://community.fastly.steamstatic.com/economy/image/' + it.icon + '/' + size + '" alt="">' : ''; }
+  // Steam rarity colors are tuned for a dark bg; clamp luminance so names stay readable in either theme.
+  function nameColor(hex) {
+    hex = (hex || '888888'); if (hex.length === 3) hex = hex.replace(/./g, '$&$&');
+    var r = parseInt(hex.slice(0, 2), 16), g = parseInt(hex.slice(2, 4), 16), b = parseInt(hex.slice(4, 6), 16);
+    if (isNaN(r)) { r = g = b = 136; }
+    var lum = 0.299 * r + 0.587 * g + 0.114 * b, light = termEl.getAttribute('data-theme') === 'light', f = 1;
+    if (light && lum > 110) f = 110 / lum;            // too bright on white → darken
+    else if (!light && lum < 95) f = 95 / Math.max(1, lum);   // too dark on near-black → lighten
+    if (f !== 1) { r = Math.min(255, Math.round(r * f)); g = Math.min(255, Math.round(g * f)); b = Math.min(255, Math.round(b * f)); }
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+  }
 
   function renderWatch() {
     var q = ($('t-search').value || '').toLowerCase();
@@ -114,7 +125,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
       var p = (it.chg != null ? it.chg : null), c = pctClass(p), sg = p >= 0 ? '+' : '';
       return '<div class="wl-row" data-hash="' + encodeURIComponent(it.hash) + '">' +
         '<div class="wl-ic">' + icon(it, '48fx48f') + '</div>' +
-        '<div class="wl-l"><div class="wl-name" style="color:#' + (it.color || '888') + '">' + it.name + '</div>' +
+        '<div class="wl-l"><div class="wl-name" style="color:' + nameColor(it.color) + '">' + it.name + '</div>' +
         '<div class="wl-tk">' + (rarityOf(it.hash) || it.type || '') + '</div></div>' +
         '<div class="wl-spark">' + (it.spark ? spark(it.spark, 58, 22) : '') + '</div>' +
         '<div class="wl-r"><div class="wl-price num ' + c + '">' + money(it.price) + '</div>' +
@@ -157,7 +168,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     el.innerHTML =
       '<div class="p-head">' +
         '<div class="p-ic">' + icon(it, '62fx62f') + '</div>' +
-        '<div class="p-id"><div class="p-l1"><span class="p-name" style="color:#' + (it.color || '888') + '">' + it.name + '</span>' +
+        '<div class="p-id"><div class="p-l1"><span class="p-name" style="color:' + nameColor(it.color) + '">' + it.name + '</span>' +
         (rar ? '<span class="p-rar">' + rar + '</span>' : '') + '</div>' +
         '<div class="p-quote"><span class="p-price num ' + c + '">' + money(it.price) + '</span>' +
         '<span class="p-chip ' + c + '">' + (p === null ? '' : sg + p.toFixed(2) + '%') + '</span></div></div>' +
@@ -304,7 +315,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   function setTheme(t) { termEl.setAttribute('data-theme', t); try { localStorage.setItem('tbh-term-theme', t); } catch (e) {} }
   $('t-theme').addEventListener('click', function () {
     setTheme(termEl.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
-    if (fix) renderGrid();
+    if (fix) { renderWatch(); renderGrid(); }   // re-run so theme-aware name colors update
   });
   (function () {
     var saved; try { saved = localStorage.getItem('tbh-term-theme'); } catch (e) {}
@@ -360,7 +371,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   background:var(--bg);color:var(--ink);min-height:calc(100vh - 64px);
   font-family:'Inter',-apple-system,'Segoe UI',system-ui,sans-serif}
 .term[data-theme="light"]{
-  --bg:#ffffff;--p:#f4f6fa;--p2:#fafbfd;--ln:#e4e7ee;--ink:#0d1117;--mut:#5b6675;--dim:#97a0ad;
+  --bg:#ffffff;--p:#f4f6fa;--p2:#fafbfd;--ln:#e4e7ee;--ink:#0d1117;--mut:#525c6b;--dim:#7e8794;
   --hover:#f1f4f9;--rowln:#eef0f5;--tile:#f1f3f8;--on:#e5eaf2;--activeoutline:#9bb9dd;--statbg:#f7f8fb;
   --grid:#edf0f4;--axis:#9aa3b0;--ma5:#2c2c2a;--tipbg:#ffffff;--cross:#8b97a8}
 .term .num{font-variant-numeric:tabular-nums;font-feature-settings:'tnum' 1;letter-spacing:.1px}
