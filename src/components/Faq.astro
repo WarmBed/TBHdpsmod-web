@@ -4,7 +4,15 @@ import { getDict } from '../i18n';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const t = getDict(locale).faq;
+const faqLd = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: t.items.map((it) => ({
+    '@type': 'Question', name: it.q,
+    acceptedAnswer: { '@type': 'Answer', text: it.a },
+  })),
+};
 ---
+<script is:inline type="application/ld+json" set:html={JSON.stringify(faqLd)} />
 <section class="section alt" id="faq"><div class="wrap">
   <div class="kicker">{t.kicker}</div>
   <h2 class="h2">{t.title}</h2>

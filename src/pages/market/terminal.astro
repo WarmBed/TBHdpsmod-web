@@ -2,12 +2,21 @@
 import BaseLayout from '../../components/BaseLayout.astro';
 import MarketTerminal from '../../components/MarketTerminal.astro';
 const locale = 'en' as const;
+const appLd = {
+  '@context': 'https://schema.org', '@type': 'WebApplication',
+  name: 'TBH Terminal — TaskBarHero market terminal',
+  applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'Requires JavaScript',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  description: 'Live Steam Community Market prices for TaskBarHero items: candlestick charts, MA/BOLL, 24h volume, order book depth and a sortable watchlist.',
+  inLanguage: ['en', 'zh-Hant', 'zh-Hans', 'ja', 'es'],
+};
 ---
 <BaseLayout
   locale={locale}
   path="/market/terminal"
   title="TBH Terminal — live TaskBarHero market charts"
   description="Futu-style multi-chart terminal for TaskBarHero items: candlestick + MA/BOLL, volume, order book depth, and a live watchlist.">
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(appLd)} />
   <div class="sr-only">
     <h1>TaskBarHero market terminal — live item prices, charts & order book</h1>
     <p>Track live Steam Community Market prices for every tradable TaskBarHero (Task Bar Hero / TBH) item: candlestick and line charts with MA/BOLL indicators, 24h trading volume, a 5-level order book and a sortable watchlist. Free, in your browser, in 5 languages.</p>
