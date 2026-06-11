@@ -155,7 +155,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
       return '<div class="wl-row" data-hash="' + encodeURIComponent(it.hash) + '">' +
         '<div class="wl-ic">' + icon(it, '48fx48f') + '</div>' +
         '<div class="wl-l"><div class="wl-name" style="color:' + nameColor(it.color) + '">' + dispName(it) + '</div>' +
-        '<div class="wl-tk">' + (rarityOf(it.hash) || it.type || '') + '</div></div>' +
+        '<div class="wl-tk">' + T.listings + ' ' + (it.listings || 0).toLocaleString() + '</div></div>' +
         '<div class="wl-spark">' + (it.spark ? spark(it.spark, 58, 22) : '') + '</div>' +
         '<div class="wl-r"><div class="wl-price num ' + c + '">' + money(it.price) + '</div>' +
         '<div class="wl-chip ' + c + '">' + (p === null ? '—' : sg + p.toFixed(2) + '%') + '</div></div>' +
@@ -166,7 +166,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     });
   }
 
-  function loadItem(hash) { panels[active] = hash; renderGrid(); active = (active + 1) % (layout === '1' ? 1 : 4); paintActive(); }
+  function loadItem(hash) { panels[active] = hash; renderGrid(); }   // load into the selected panel; click a panel to target it
   function paintActive() { Array.prototype.forEach.call($('t-grid').children, function (el, i) { el.classList.toggle('active', i === active); }); }
 
   function renderGrid() {
@@ -242,12 +242,12 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     var iw = W - padR;
     var ma5 = cvar('--ma5') || '#888';
     var mas = MA.map(function (m, i) { return { c: i === 0 ? ma5 : m.c, p: m.p }; });
-    if (tf === 30) return drawLine(box, legend, d, W, H, iw, priceH, volH, padB, gap);
-
     var cp = cleanVals(d.hist.map(function (x) { return x[1]; }));
     cp[cp.length - 1] = d.hist[d.hist.length - 1][1];   // never clamp the current price — chart must end at the header
     var chist = d.hist.map(function (x, i) { return [x[0], cp[i], x[2]]; });
     var cnd = bucketByPeriod(chist, tf * 60);
+    // fine periods (≤2h) are too sparse for candles right now → draw a line of the period closes
+    if (tf <= 120) return drawLine(box, legend, { hist: cnd.map(function (k) { return [k.t, k.c, k.v]; }) }, W, H, iw, priceH, volH, padB, gap);
     var n = cnd.length, closes = cnd.map(function (k) { return k.c; });
     mas.forEach(function (m) { m.v = sma(closes, m.p); });
     var bb = boll(closes, 20, 2);
