@@ -19,6 +19,8 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   <div class="term-top">
     <div class="term-brand">TBH <span class="ta">Terminal</span> <span class="tbadge">beta</span></div>
     <input id="t-search" type="text" placeholder={T.search} autocomplete="off" />
+    <select id="t-cat" class="term-filter" aria-label="type"></select>
+    <select id="t-rar" class="term-filter" aria-label="quality"></select>
     <div class="term-tf" id="t-tf">
       <button data-tf="30">{T.line}</button>
       <button data-tf="60">1H</button>
@@ -53,10 +55,39 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   var UP = '#26d07c', DOWN = '#f0616d', UPF = 'rgba(38,208,124,.13)', DNF = 'rgba(240,97,109,.13)';
   var MA = [{ p: 5, c: '#e6e8ec' }, { p: 10, c: '#f5b942' }, { p: 30, c: '#c66bd6' }];
   var BOLLC = { mid: '#e6e8ec', band: '#3aa0e0' };
-  var fix = null, panels = [null, null, null, null], active = 0, layout = '4', tf = 240, showMA = true, showBOLL = true, sortKey = 'vol', sortDir = -1;
+  var fix = null, panels = [null, null, null, null], active = 0, layout = '4', tf = 240, showMA = true, showBOLL = true, sortKey = 'vol', sortDir = -1, catFilter = '', rarFilter = '';
   var $ = function (id) { return document.getElementById(id); };
   var termEl = document.querySelector('.term');
   function cvar(n) { return getComputedStyle(termEl).getPropertyValue(n).trim(); }
+
+  // group the granular Steam types (e.g. "Sword - Lv. 65") into 4 categories for the filter
+  var CAT = {};
+  ['Sword', 'Scepter', 'Bow', 'Staff', 'Orb', 'Tome', 'Crossbow', 'Hatchet', 'Axe', 'Arrow', 'Bolt', 'Wand', 'Dagger', 'Spear', 'Mace'].forEach(function (t) { CAT[t] = 'weapon'; });
+  ['Armor', 'Helmet', 'Boots', 'Gloves', 'Shield', 'Bracer'].forEach(function (t) { CAT[t] = 'armor'; });
+  ['Amulet', 'Ring', 'Earing', 'Earring', 'Necklace', 'Pendant'].forEach(function (t) { CAT[t] = 'accessory'; });
+  function categoryOf(it) { var t = it.type || ''; if (/Material|Soulstone/i.test(t)) return 'material'; return CAT[t.replace(/\s*-\s*Lv\..*$/i, '').trim()] || ''; }
+  var FILT = {
+    allType: { en: 'All types', 'zh-Hant': '全部類型', 'zh-Hans': '全部类型', ja: 'すべて', es: 'Todos' },
+    allQ: { en: 'All quality', 'zh-Hant': '全部品質', 'zh-Hans': '全部品质', ja: '全品質', es: 'Toda calidad' },
+    weapon: { en: 'Weapon', 'zh-Hant': '武器', 'zh-Hans': '武器', ja: '武器', es: 'Arma' },
+    armor: { en: 'Armor', 'zh-Hant': '防具', 'zh-Hans': '防具', ja: '防具', es: 'Armadura' },
+    accessory: { en: 'Accessory', 'zh-Hant': '飾品', 'zh-Hans': '饰品', ja: 'アクセ', es: 'Accesorio' },
+    material: { en: 'Material', 'zh-Hant': '材料', 'zh-Hans': '材料', ja: '素材', es: 'Material' },
+  };
+  function fL(k) { return (FILT[k] && (FILT[k][LOCALE] || FILT[k].en)) || k; }
+  var RARITY_L = {
+    legendary: { 'zh-Hant': '傳奇', 'zh-Hans': '传奇', ja: 'レジェンダリー', es: 'Legendario' },
+    immortal: { 'zh-Hant': '不朽', 'zh-Hans': '不朽', ja: 'イモータル', es: 'Inmortal' },
+    arcana: { 'zh-Hant': '至寶', 'zh-Hans': '至宝', ja: '至宝', es: 'Tesoro' },
+    beyond: { 'zh-Hant': '超凡', 'zh-Hans': '超凡', ja: '超凡', es: 'Trascendente' },
+    celestial: { 'zh-Hant': '天界', 'zh-Hans': '天界', ja: 'セレスティアル', es: 'Celestial' },
+    divine: { 'zh-Hant': '神聖', 'zh-Hans': '神圣', ja: 'ディヴァイン', es: 'Divino' },
+    cosmic: { 'zh-Hant': '宇宙', 'zh-Hans': '宇宙', ja: 'コズミック', es: 'Cósmico' },
+    rare: { 'zh-Hant': '稀有', 'zh-Hans': '稀有', ja: 'レア', es: 'Raro' },
+    uncommon: { 'zh-Hant': '罕見', 'zh-Hans': '罕见', ja: 'アンコモン', es: 'Infrecuente' },
+    common: { 'zh-Hant': '普通', 'zh-Hans': '普通', ja: 'コモン', es: 'Común' },
+  };
+  function rarL(w) { var r = RARITY_L[w.toLowerCase()]; return (r && r[LOCALE]) || w; }
 
   function money(c) { return '$' + (c / 100).toFixed(2); }
   function big(n) { if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M'; if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K'; return '' + n; }
@@ -138,7 +169,12 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
 
   function renderWatch() {
     var q = ($('t-search').value || '').toLowerCase();
-    var rows = fix.list.filter(function (it) { return it.name.toLowerCase().indexOf(q) >= 0 || dispName(it).toLowerCase().indexOf(q) >= 0; });
+    var rows = fix.list.filter(function (it) {
+      if (q && it.name.toLowerCase().indexOf(q) < 0 && dispName(it).toLowerCase().indexOf(q) < 0) return false;
+      if (catFilter && categoryOf(it) !== catFilter) return false;
+      if (rarFilter && rarityOf(it.hash) !== rarFilter) return false;
+      return true;
+    });
     rows.sort(function (a, b) {
       if (sortKey === 'name') return sortDir * a.name.localeCompare(b.name);
       var av, bv;
@@ -376,6 +412,16 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   })();
 
   $('t-search').addEventListener('input', renderWatch);
+  $('t-cat').addEventListener('change', function (e) { catFilter = e.target.value; renderWatch(); });
+  $('t-rar').addEventListener('change', function (e) { rarFilter = e.target.value; renderWatch(); });
+  function populateFilters() {
+    var seen = {}, rars = [];
+    fix.list.forEach(function (it) { var r = rarityOf(it.hash); if (r && !seen[r]) { seen[r] = 1; rars.push(r); } });
+    var order = ['Legendary', 'Immortal', 'Arcana', 'Beyond', 'Celestial', 'Divine', 'Cosmic', 'Rare', 'Uncommon', 'Common'];
+    rars.sort(function (a, b) { return order.indexOf(a) - order.indexOf(b); });
+    $('t-cat').innerHTML = '<option value="">' + fL('allType') + '</option>' + ['weapon', 'armor', 'accessory', 'material'].map(function (c) { return '<option value="' + c + '">' + fL(c) + '</option>'; }).join('');
+    $('t-rar').innerHTML = '<option value="">' + fL('allQ') + '</option>' + rars.map(function (r) { return '<option value="' + r + '">' + rarL(r) + '</option>'; }).join('');
+  }
   Array.prototype.forEach.call(document.querySelectorAll('.wl-s'), function (s) {
     s.addEventListener('click', function () {
       var k = s.getAttribute('data-s');
@@ -406,7 +452,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   }
 
   function start(data, live) {
-    fix = data; LIVE = live;
+    fix = data; LIVE = live; populateFilters();
     if (!live) {
       fix.list.forEach(function (it) { var d = fix.detail && fix.detail[it.hash]; if (d && d.hist && d.hist.length > 1) { it.chg = changePct(d.hist); it.spark = d.hist.map(function (p) { return p[1]; }); } });
     }
@@ -441,7 +487,9 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   --grid:#edf0f4;--axis:#9aa3b0;--ma5:#2c2c2a;--tipbg:#ffffff;--cross:#8b97a8;
   --chipUpBg:#e1f3e9;--chipUpFg:#15793f;--chipDnBg:#fbe3e5;--chipDnFg:#bb2f3d}
 .term .num{font-variant-numeric:tabular-nums;font-feature-settings:'tnum' 1;letter-spacing:.1px}
-.term-top{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--ln);background:var(--p2);position:sticky;top:64px;z-index:5}
+.term-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--ln);background:var(--p2);position:sticky;top:64px;z-index:5}
+.term-filter{background:var(--p);border:1px solid var(--ln);color:var(--ink);height:32px;border-radius:8px;padding:0 6px;font-size:12px;outline:none;cursor:pointer;max-width:110px}
+.term-filter:focus{border-color:var(--mut)}
 .term-brand{font-size:15px;font-weight:800;letter-spacing:-.3px}.term-brand .ta{color:var(--accent)}
 .tbadge{font-size:10px;font-weight:600;color:var(--dim);border:1px solid var(--ln);border-radius:5px;padding:1px 6px;margin-left:2px;vertical-align:2px}
 #t-search{background:var(--p);border:1px solid var(--ln);color:var(--ink);height:32px;border-radius:8px;padding:0 12px;font-size:13px;width:200px;outline:none}
