@@ -378,6 +378,8 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     var area = line + 'L' + iw + ' ' + (4 + priceH) + ' L0 ' + (4 + priceH) + ' Z';
     var grid = '', axis = '';
     [0, 0.5, 1].forEach(function (f) { var val = pmn + f * pr, y = PY(val); grid += '<line x1="0" y1="' + y.toFixed(1) + '" x2="' + iw + '" y2="' + y.toFixed(1) + '" class="g"/>'; axis += '<text x="' + (W - padR + 4) + '" y="' + (y + 3).toFixed(1) + '" class="ax">' + money(val) + '</text>'; });
+    var dt0 = new Date(hist[0][0] * 1000), dt1 = new Date(hist[n - 1][0] * 1000);
+    axis += '<text x="0" y="' + (H - 4) + '" class="ax">' + (dt0.getMonth() + 1) + '/' + dt0.getDate() + '</text><text x="' + (iw - 4) + '" y="' + (H - 4) + '" class="ax" text-anchor="end">' + (dt1.getMonth() + 1) + '/' + dt1.getDate() + '</text>';
     var vol = '';
     if (hasVol) for (i = 0; i < n; i++) { var bh = (vols[i] / vmx) * volH, bw = Math.max(0.6, iw / n - 0.4); vol += '<rect x="' + X(i).toFixed(1) + '" y="' + (vy0 - bh).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + bh.toFixed(1) + '" fill="' + col + '" opacity="0.35"/>'; }
     box.insertAdjacentHTML('afterbegin', '<svg class="p-svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '">' + grid +
