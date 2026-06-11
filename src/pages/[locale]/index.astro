@@ -4,6 +4,7 @@ import Hero from '../../components/Hero.astro';
 import StatsBand from '../../components/StatsBand.astro';
 import FeatureRow from '../../components/FeatureRow.astro';
 import InstallSteps from '../../components/InstallSteps.astro';
+import MarketSection from '../../components/MarketSection.astro';
 import Faq from '../../components/Faq.astro';
 import FinalCta from '../../components/FinalCta.astro';
 import { getDict } from '../../i18n';
@@ -36,6 +37,7 @@ images2[images.length - 1] = priceCurve;   // price card shows the backpack shot
     <p class="sub">{dict.featuresSub}</p>
     {dict.features.map((f, i) => <FeatureRow feature={f} image={images[i]} image2={images2[i]} reversed={i % 2 === 1} />)}
   </div></section>
+  <MarketSection locale={locale} />
   <InstallSteps locale={locale} />
   <Faq locale={locale} />
   <FinalCta locale={locale} />

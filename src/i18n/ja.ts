@@ -8,7 +8,7 @@ const ja: Dict = {
     installDesc: 'TaskBarHero（Task Bar Hero）の TBH DPS Meter オーバーレイ（BepInEx プラグイン）を3ステップでインストール。コンパイル不要。',
     changelogTitle: 'チェンジログ — TBH DPS Meter（TaskBarHero）',
     changelogDesc: 'TBH DPS Meter（TaskBarHero / タスクバーヒーロー オーバーレイ）のリリースノートとバージョン履歴。',
-    keywords: 'TaskBarHero, Task Bar Hero, TBH, タスクバーヒーロー, TaskBarHero DPS, TaskBarHero Mod, TaskBarHero オーバーレイ, DPS メーター, ダメージ計, ダメージ統計, ファーミングプランナー, ドロップ分布, Steam マーケット価格, BepInEx Mod',
+    keywords: 'TaskBarHero, Task Bar Hero, TBH, タスクバーヒーロー, TaskBarHero DPS, TaskBarHero Mod, TaskBarHero オーバーレイ, DPS メーター, ダメージ計, ダメージ統計, ファーミングプランナー, ドロップ分布, BepInEx Mod, TaskBarHero 価格, TaskBarHero 相場, タスクバーヒーロー 価格, タスクバーヒーロー マーケット, TaskBarHero マーケット, アイテム価格, 物価, Steam マーケット価格, ローソク足チャート, 板情報',
   },
   nav: { features: '機能', install: 'インストール', faq: 'よくある質問', download: 'ダウンロード' },
   hero: {

@@ -17,7 +17,19 @@ const META: Record<Locale, { title: string; desc: string }> = {
   es: { title: 'TBH Terminal — gráficos de mercado de TaskBarHero en vivo', desc: 'Terminal multigráfico estilo Futu: velas + MA/BOLL, volumen, libro de órdenes y lista de seguimiento en vivo.' },
 };
 const m = META[locale];
+const H1: Record<Locale, { h: string; p: string }> = {
+  en: { h: 'TaskBarHero market terminal — live item prices, charts & order book', p: 'Track live Steam Community Market prices for every tradable TaskBarHero (Task Bar Hero / TBH) item: candlestick and line charts with MA/BOLL, 24h volume, a 5-level order book and a sortable watchlist.' },
+  'zh-Hant': { h: '塔斯克巴·英雄市場行情終端 —— 即時物價、K 線圖與掛單簿', p: '追蹤塔斯克巴·英雄(TaskBarHero / Task Bar Hero / TBH)每一件可交易物品的 Steam 市集即時價格:K 線/折線圖與 MA/BOLL、24 小時成交量、五檔掛單簿與可排序自選清單。' },
+  'zh-Hans': { h: '塔斯克巴·英雄市场行情终端 —— 实时物价、K 线图与挂单簿', p: '追踪塔斯克巴·英雄(TaskBarHero / Task Bar Hero / TBH)每一件可交易物品的 Steam 市场实时价格:K 线/折线图与 MA/BOLL、24 小时成交量、五档挂单簿与可排序自选列表。' },
+  ja: { h: 'TaskBarHero マーケット端末 —— リアルタイム価格・チャート・板情報', p: 'TaskBarHero(タスクバーヒーロー / Task Bar Hero / TBH)の全取引アイテムの Steam マーケット価格をリアルタイムで追跡:ローソク足/ラインと MA/BOLL、24時間出来高、5段の板情報、並べ替え可能なウォッチリスト。' },
+  es: { h: 'Terminal de mercado de TaskBarHero — precios, gráficos y libro de órdenes en vivo', p: 'Sigue los precios en vivo del mercado de Steam de cada objeto comerciable de TaskBarHero (Task Bar Hero / TBH): gráficos de velas y línea con MA/BOLL, volumen 24h, libro de órdenes de 5 niveles y lista de seguimiento.' },
+};
+const h1 = H1[locale];
 ---
 <BaseLayout locale={locale} path="/market/terminal" title={m.title} description={m.desc}>
+  <div class="sr-only">
+    <h1>{h1.h}</h1>
+    <p>{h1.p}</p>
+  </div>
   <MarketTerminal locale={locale} />
 </BaseLayout>

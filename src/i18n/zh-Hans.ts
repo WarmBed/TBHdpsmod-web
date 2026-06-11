@@ -8,7 +8,7 @@ const zhHans: Dict = {
     installDesc: '三步骤安装 TaskBarHero（Task Bar Hero）的 TBH DPS Meter 叠图（BepInEx 插件），免编译。',
     changelogTitle: '更新日志 — TBH DPS Meter（TaskBarHero）',
     changelogDesc: 'TBH DPS Meter（TaskBarHero / 塔斯克巴·英雄 叠图）的版本更新与发布记录。',
-    keywords: '塔斯克巴·英雄, 塔斯克巴英雄, TaskBarHero, Task Bar Hero, TBH, 塔斯克巴·英雄 DPS, 塔斯克巴·英雄 插件, 塔斯克巴·英雄 伤害, TaskBarHero DPS, TaskBarHero mod, DPS 计算, 伤害统计, 伤害量表, 刷图规划, 宝箱记录, 掉宝热力图, Steam 市场查价, BepInEx 插件',
+    keywords: '塔斯克巴·英雄, 塔斯克巴英雄, TaskBarHero, Task Bar Hero, TBH, 塔斯克巴·英雄 DPS, 塔斯克巴·英雄 插件, 塔斯克巴·英雄 伤害, TaskBarHero DPS, TaskBarHero mod, DPS 计算, 伤害统计, 伤害量表, 刷图规划, 宝箱记录, 掉宝热力图, BepInEx 插件, 塔斯克巴·英雄 市场, 塔斯克巴·英雄 物价, 塔斯克巴·英雄 行情, 塔斯克巴英雄 查价, TaskBarHero 市场, TaskBarHero 物价, 市场行情终端, K 线图, 挂单簿, Steam 市场查价',
   },
   nav: { features: '功能', install: '安装', faq: '常见问题', download: '下载' },
   hero: {

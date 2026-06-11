@@ -1,0 +1,65 @@
+---
+import { type Locale } from '../config';
+import { localizedPath } from '../lib/seo';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+
+type S = { kicker: string; title: string; sub: string; b: string[]; cta: string };
+const STR: Record<Locale, S> = {
+  en: {
+    kicker: 'Free web tool · no install',
+    title: 'Live TaskBarHero market terminal',
+    sub: 'A Futu-style market dashboard for every tradable TaskBarHero (Task Bar Hero / TBH) item — live Steam Community Market prices, candlestick charts, a 5-level order book and a sortable watchlist. Runs in your browser, in 5 languages.',
+    b: ['Live lowest price, median, 24h volume & listings', 'Candlestick / line charts with timeframes from 30m to 3 days', '5-level order-book depth — asks & bids', 'Filter by weapon / armor / accessory / material and rarity', 'Dark / light themes · official item names in 5 languages'],
+    cta: 'Open the market terminal →',
+  },
+  'zh-Hant': {
+    kicker: '免費網頁工具 · 免安裝',
+    title: '塔斯克巴·英雄 即時市場行情終端',
+    sub: '塔斯克巴·英雄(TaskBarHero / Task Bar Hero / TBH)所有可交易物品的富途式市場看板 —— Steam 市集即時價格、K 線圖、五檔掛單簿、可排序自選清單。瀏覽器直接用,支援 5 種語言。',
+    b: ['最低價、中位、24h 成交量、在售即時顯示', 'K 線 / 折線圖,時間軸 30 分到 3 天', '五檔掛單簿深度(賣單 / 買單)', '依武器 / 防具 / 飾品 / 材料與品質篩選', '深淺色主題 · 5 語官方物品名'],
+    cta: '開啟市場終端 →',
+  },
+  'zh-Hans': {
+    kicker: '免费网页工具 · 免安装',
+    title: '塔斯克巴·英雄 实时市场行情终端',
+    sub: '塔斯克巴·英雄(TaskBarHero / Task Bar Hero / TBH)所有可交易物品的富途式市场看板 —— Steam 市场实时价格、K 线图、五档挂单簿、可排序自选列表。浏览器直接用,支持 5 种语言。',
+    b: ['最低价、中位、24h 成交量、在售实时显示', 'K 线 / 折线图,时间轴 30 分到 3 天', '五档挂单簿深度(卖单 / 买单)', '按武器 / 防具 / 饰品 / 材料与品质筛选', '深浅色主题 · 5 语官方物品名'],
+    cta: '打开市场终端 →',
+  },
+  ja: {
+    kicker: '無料 Web ツール · インストール不要',
+    title: 'TaskBarHero マーケット端末(リアルタイム相場)',
+    sub: 'TaskBarHero(タスクバーヒーロー / Task Bar Hero / TBH)の全取引アイテムの Futu 風マーケット画面 —— Steam マーケットのリアルタイム価格、ローソク足チャート、5段の板情報、並べ替え可能なウォッチリスト。ブラウザで動作、5言語対応。',
+    b: ['最安値・中央値・24h 出来高・出品数をリアルタイム表示', 'ローソク足 / ライン、時間軸は30分〜3日', '5段の板情報(売り / 買い)', '武器 / 防具 / アクセ / 素材・レアリティで絞り込み', 'ダーク / ライト · 5言語の公式アイテム名'],
+    cta: 'マーケット端末を開く →',
+  },
+  es: {
+    kicker: 'Herramienta web gratis · sin instalación',
+    title: 'Terminal de mercado en vivo de TaskBarHero',
+    sub: 'Un panel de mercado estilo Futu para cada objeto comerciable de TaskBarHero (Task Bar Hero / TBH) — precios en vivo del mercado de Steam, gráficos de velas, libro de órdenes de 5 niveles y lista de seguimiento. En tu navegador y en 5 idiomas.',
+    b: ['Precio más bajo, mediana, volumen 24h y ofertas en vivo', 'Gráficos de velas / línea, marcos de 30 min a 3 días', 'Libro de órdenes de 5 niveles (compra / venta)', 'Filtra por arma / armadura / accesorio / material y rareza', 'Temas claro / oscuro · nombres oficiales en 5 idiomas'],
+    cta: 'Abrir el terminal de mercado →',
+  },
+};
+const t = STR[locale] ?? STR.en;
+const href = localizedPath(locale, '/market/terminal');
+---
+<section class="section alt" id="market">
+  <div class="wrap" style="max-width:880px">
+    <div class="kicker">{t.kicker}</div>
+    <h2 class="h2">{t.title}</h2>
+    <p class="sub" style="margin-bottom:32px">{t.sub}</p>
+    <ul class="market-points">
+      {t.b.map((x) => <li>{x}</li>)}
+    </ul>
+    <div style="text-align:center;margin-top:34px">
+      <a class="btn primary" href={href} style="font-size:15px;padding:13px 26px">{t.cta}</a>
+    </div>
+  </div>
+</section>
+<style>
+  .market-points{list-style:none;max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+  .market-points li{font-size:15px;color:var(--ink);display:flex;gap:10px;align-items:flex-start}
+  .market-points li:before{content:"\2713";color:var(--brand2);font-weight:800;flex-shrink:0}
+</style>

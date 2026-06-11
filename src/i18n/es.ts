@@ -8,7 +8,7 @@ const es: Dict = {
     installDesc: 'Instala el overlay TBH DPS Meter (plugin de BepInEx) para TaskBarHero / Task Bar Hero en tres pasos. Sin compilación.',
     changelogTitle: 'Registro de cambios — TBH DPS Meter (TaskBarHero)',
     changelogDesc: 'Notas de versión e historial de lanzamientos del overlay TBH DPS Meter para TaskBarHero (Task Bar Hero).',
-    keywords: 'TaskBarHero, Task Bar Hero, TBH, TaskBarHero DPS, TaskBarHero mod, overlay TaskBarHero, medidor de DPS, medidor de daño, daño recibido, planificador de farmeo, mapa de calor de botín, precio mercado Steam, plugin BepInEx, IL2CPP',
+    keywords: 'TaskBarHero, Task Bar Hero, TBH, TaskBarHero DPS, TaskBarHero mod, overlay TaskBarHero, medidor de DPS, medidor de daño, daño recibido, planificador de farmeo, mapa de calor de botín, plugin BepInEx, IL2CPP, TaskBarHero mercado, TaskBarHero precios, precios de objetos TaskBarHero, terminal de mercado, gráfico de velas, libro de órdenes, precio mercado Steam',
   },
   nav: { features: 'Características', install: 'Instalar', faq: 'Preguntas frecuentes', download: 'Descargar' },
   hero: {
