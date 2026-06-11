@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Market from '../../components/Market.astro';
+import { LOCALES, DEFAULT_LOCALE, type Locale } from '../../config';
+
+export function getStaticPaths() {
+  return LOCALES.filter((l) => l !== DEFAULT_LOCALE).map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
+
+const META: Record<Locale, { title: string; desc: string }> = {
+  en: { title: 'TBH Market — live TaskBarHero item prices & volume', desc: 'Live market board for TaskBarHero: item prices, 24h volume, and 7-day price trends.' },
+  'zh-Hant': { title: 'TBH 市場 — 塔斯克巴·英雄即時物價與成交量', desc: '塔斯克巴·英雄的即時市場看板：物品價格、24h 成交量、7 天價格走勢，資料來自 Steam 社群市場。' },
+  'zh-Hans': { title: 'TBH 市场 — 塔斯克巴·英雄实时物价与成交量', desc: '塔斯克巴·英雄的实时市场看板：物品价格、24h 成交量、7 天价格走势，数据来自 Steam 社区市场。' },
+  ja: { title: 'TBH マーケット — TaskBarHero のリアルタイム価格と取引量', desc: 'TaskBarHero のリアルタイム・マーケットボード：アイテム価格、24h 取引量、7日間の価格推移。' },
+  es: { title: 'TBH Market — precios y volumen de objetos de TaskBarHero en vivo', desc: 'Tablero de mercado en vivo de TaskBarHero: precios, volumen 24h y tendencias de precios a 7 días.' },
+};
+const m = META[locale];
+---
+<BaseLayout locale={locale} path="/market" title={m.title} description={m.desc}>
+  <Market locale={locale} />
+</BaseLayout>

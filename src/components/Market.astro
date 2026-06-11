@@ -1,0 +1,365 @@
+---
+import { type Locale, GITHUB_OWNER, GITHUB_REPO } from '../config';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+
+// prices.json lives on the data branch of the dashboard repo. raw has CORS *, jsDelivr is the fallback.
+const PRIMARY = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/data/prices.json`;
+const FALLBACK = `https://cdn.jsdelivr.net/gh/${GITHUB_OWNER}/${GITHUB_REPO}@data/prices.json`;
+
+type S = {
+  tagline: string; search: string; sort: string;
+  sVol: string; sChg: string; sPrice: string; sName: string;
+  cItems: string; cVol: string; cGain: string; cLose: string;
+  hItem: string; hPrice: string; hChg: string; h7d: string; hVol: string; hQty: string; hMed: string;
+  back: string; median: string; listings: string; vol24: string; chg24: string; hi: string; lo: string;
+  updated: string; loading: string; error: string; empty: string; rowsHint: string;
+};
+
+const STRINGS: Record<Locale, S> = {
+  en: {
+    tagline: 'Live Steam market data · TaskBarHero',
+    search: 'Search items…', sort: 'Sort',
+    sVol: 'Volume', sChg: 'Change', sPrice: 'Price', sName: 'Name',
+    cItems: 'Items', cVol: '24h volume', cGain: 'Top gainer', cLose: 'Top loser',
+    hItem: 'Item', hPrice: 'Price', hChg: '24h', h7d: '7d trend', hVol: 'Volume', hQty: 'Listings', hMed: 'Median',
+    back: 'Back to market', median: 'Median', listings: 'Listings', vol24: '24h volume', chg24: '24h change', hi: '7d high', lo: '7d low',
+    updated: 'Updated {m} min ago', loading: 'Loading market data…', error: 'Failed to load data', empty: 'No matching items', rowsHint: 'Click a row for the price chart',
+  },
+  'zh-Hant': {
+    tagline: '即時 Steam 市場資料 · 塔斯克巴·英雄',
+    search: '搜尋物品…', sort: '排序',
+    sVol: '成交量', sChg: '漲跌幅', sPrice: '價格', sName: '名稱',
+    cItems: '物品數', cVol: '24h 成交', cGain: '最大漲幅', cLose: '最大跌幅',
+    hItem: '物品', hPrice: '價格', hChg: '24h', h7d: '7天走勢', hVol: '成交', hQty: '在售', hMed: '中位',
+    back: '返回看板', median: '中位價', listings: '在售數', vol24: '24h 成交', chg24: '24h 漲跌', hi: '7天高', lo: '7天低',
+    updated: '更新於 {m} 分鐘前', loading: '載入市場資料中…', error: '資料載入失敗', empty: '無符合物品', rowsHint: '點任一列看走勢圖',
+  },
+  'zh-Hans': {
+    tagline: '实时 Steam 市场数据 · 塔斯克巴·英雄',
+    search: '搜索物品…', sort: '排序',
+    sVol: '成交量', sChg: '涨跌幅', sPrice: '价格', sName: '名称',
+    cItems: '物品数', cVol: '24h 成交', cGain: '最大涨幅', cLose: '最大跌幅',
+    hItem: '物品', hPrice: '价格', hChg: '24h', h7d: '7天走势', hVol: '成交', hQty: '在售', hMed: '中位',
+    back: '返回看板', median: '中位价', listings: '在售数', vol24: '24h 成交', chg24: '24h 涨跌', hi: '7天高', lo: '7天低',
+    updated: '更新于 {m} 分钟前', loading: '加载市场数据中…', error: '数据加载失败', empty: '无匹配物品', rowsHint: '点任一行看走势图',
+  },
+  ja: {
+    tagline: 'リアルタイム Steam マーケットデータ · TaskBarHero',
+    search: 'アイテムを検索…', sort: '並び替え',
+    sVol: '取引量', sChg: '変動率', sPrice: '価格', sName: '名前',
+    cItems: 'アイテム数', cVol: '24h 取引量', cGain: '値上がり', cLose: '値下がり',
+    hItem: 'アイテム', hPrice: '価格', hChg: '24h', h7d: '7日推移', hVol: '取引量', hQty: '出品数', hMed: '中央値',
+    back: 'マーケットへ戻る', median: '中央値', listings: '出品数', vol24: '24h 取引量', chg24: '24h 変動', hi: '7日高値', lo: '7日安値',
+    updated: '{m} 分前に更新', loading: 'マーケットデータを読み込み中…', error: 'データの読み込みに失敗', empty: '一致するアイテムなし', rowsHint: '行をクリックで価格チャート',
+  },
+  es: {
+    tagline: 'Datos del mercado de Steam en vivo · TaskBarHero',
+    search: 'Buscar objetos…', sort: 'Orden',
+    sVol: 'Volumen', sChg: 'Cambio', sPrice: 'Precio', sName: 'Nombre',
+    cItems: 'Objetos', cVol: 'Volumen 24h', cGain: 'Mayor subida', cLose: 'Mayor bajada',
+    hItem: 'Objeto', hPrice: 'Precio', hChg: '24h', h7d: 'Tendencia 7d', hVol: 'Volumen', hQty: 'Ofertas', hMed: 'Mediana',
+    back: 'Volver al mercado', median: 'Mediana', listings: 'Ofertas', vol24: 'Volumen 24h', chg24: 'Cambio 24h', hi: 'Máx. 7d', lo: 'Mín. 7d',
+    updated: 'Actualizado hace {m} min', loading: 'Cargando datos del mercado…', error: 'Error al cargar datos', empty: 'Sin objetos coincidentes', rowsHint: 'Haz clic en una fila para ver el gráfico',
+  },
+};
+
+const L = STRINGS[locale];
+---
+
+<section class="mkt">
+  <div class="mkt-wrap">
+    <header class="mkt-top">
+      <div class="mkt-head">
+        <h1 class="mkt-title">TBH <span class="mkt-accent">Market</span></h1>
+        <span class="mkt-sub" id="mkt-sub">{L.tagline}</span>
+      </div>
+      <div class="mkt-controls">
+        <input id="mkt-search" type="text" placeholder={L.search} autocomplete="off" />
+        <select id="mkt-sort" aria-label={L.sort}>
+          <option value="vol">{L.sVol}</option>
+          <option value="chg">{L.sChg}</option>
+          <option value="price">{L.sPrice}</option>
+          <option value="name">{L.sName}</option>
+        </select>
+      </div>
+    </header>
+
+    <div class="mkt-cards">
+      <div class="mkt-card"><span class="mkt-card-l">{L.cItems}</span><span class="mkt-card-v" id="c-count">—</span></div>
+      <div class="mkt-card"><span class="mkt-card-l">{L.cVol}</span><span class="mkt-card-v" id="c-vol">—</span></div>
+      <div class="mkt-card"><span class="mkt-card-l">{L.cGain}</span><span class="mkt-card-v up" id="c-gain">—</span></div>
+      <div class="mkt-card"><span class="mkt-card-l">{L.cLose}</span><span class="mkt-card-v down" id="c-lose">—</span></div>
+    </div>
+
+    <!-- list view -->
+    <div id="mkt-list">
+      <div class="mkt-hint">{L.rowsHint}</div>
+      <div class="mkt-table-wrap">
+        <table class="mkt-table">
+          <thead><tr>
+            <th class="l">{L.hItem}</th>
+            <th class="r">{L.hPrice}</th>
+            <th class="r">{L.hChg}</th>
+            <th class="c">{L.h7d}</th>
+            <th class="r">{L.hVol}</th>
+            <th class="r hide-sm">{L.hQty}</th>
+            <th class="r hide-sm">{L.hMed}</th>
+          </tr></thead>
+          <tbody id="mkt-body"><tr><td colspan="7" class="mkt-state">{L.loading}</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- detail view -->
+    <div id="mkt-detail" hidden></div>
+  </div>
+</section>
+
+<script is:inline define:vars={{ PRIMARY, FALLBACK, L }}>
+(function () {
+  var rows = [], sortKey = 'vol', cachedAt = 0;
+  var $ = function (id) { return document.getElementById(id); };
+  // concrete colors (CSS vars don't resolve inside runtime-injected SVG attributes / Astro-scoped styles)
+  var UP = '#36d399', DOWN = '#f06d6d', UPF = 'rgba(54,211,153,.12)', DNF = 'rgba(240,109,109,.12)', GRID = '#1d2633', AXIS = '#5d6878';
+
+  function money(c) { return '$' + (c / 100).toFixed(2); }
+  function big(n) { if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M'; if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K'; return '' + n; }
+  function pct(r) { return r.prev > 0 ? (r.price - r.prev) / r.prev * 100 : null; }
+  function cls(p) { return p === null ? '' : (p >= 0 ? 'up' : 'down'); }
+  function sign(p) { return p >= 0 ? '+' : ''; }
+
+  // single-spike-resistant series for charts: clamp to median*6
+  function clean(hist) {
+    var v = hist.map(function (p) { return p[1]; });
+    var med = v.slice().sort(function (a, b) { return a - b; })[Math.floor(v.length / 2)] || 1;
+    return v.map(function (x) { return Math.min(x, med * 6); });
+  }
+
+  function spark(hist, w, h) {
+    if (!hist || hist.length < 2) return '';
+    var raw = hist.map(function (p) { return p[1]; });
+    var v = clean(hist);
+    var mn = Math.min.apply(null, v), mx = Math.max.apply(null, v), rng = (mx - mn) || 1;
+    var pts = v.map(function (val, i) {
+      var x = (i / (v.length - 1)) * (w - 2) + 1;
+      var y = h - 1 - ((val - mn) / rng) * (h - 2);
+      return x.toFixed(1) + ',' + y.toFixed(1);
+    }).join(' ');
+    var up = raw[raw.length - 1] >= raw[0];
+    return '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" style="display:inline-block;vertical-align:middle"><polyline points="' + pts + '" fill="none" stroke="' + (up ? UP : DOWN) + '" stroke-width="1.5"/></svg>';
+  }
+
+  function bigChart(r) {
+    var hist = r.hist || [];
+    if (hist.length < 2) return '<div class="mkt-nochart">—</div>';
+    var w = 920, h = 260, padL = 8, padR = 8, padT = 14, padB = 22;
+    var v = clean(hist), raw = hist.map(function (p) { return p[1]; });
+    var mn = Math.min.apply(null, v), mx = Math.max.apply(null, v), rng = (mx - mn) || 1;
+    var iw = w - padL - padR, ih = h - padT - padB;
+    function X(i) { return padL + (i / (v.length - 1)) * iw; }
+    function Y(val) { return padT + ih - ((val - mn) / rng) * ih; }
+    var line = v.map(function (val, i) { return (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(val).toFixed(1); }).join(' ');
+    var area = line + ' L' + X(v.length - 1).toFixed(1) + ' ' + (padT + ih) + ' L' + X(0).toFixed(1) + ' ' + (padT + ih) + ' Z';
+    var up = raw[raw.length - 1] >= raw[0];
+    var col = up ? 'var(--up)' : 'var(--down)';
+    // gridlines at min / mid / max
+    var grid = '';
+    [0, 0.5, 1].forEach(function (f) {
+      var val = mn + f * rng, y = Y(val);
+      grid += '<line x1="' + padL + '" y1="' + y.toFixed(1) + '" x2="' + (w - padR) + '" y2="' + y.toFixed(1) + '" class="grid"/>';
+      grid += '<text x="' + (w - padR) + '" y="' + (y - 3).toFixed(1) + '" class="axis" text-anchor="end">' + money(Math.round(val)) + '</text>';
+    });
+    return '<svg viewBox="0 0 ' + w + ' ' + h + '" class="bigchart" preserveAspectRatio="none">' +
+      grid +
+      '<path d="' + area + '" fill="' + (up ? 'var(--up-fill)' : 'var(--down-fill)') + '" stroke="none"/>' +
+      '<path d="' + line + '" fill="none" stroke="' + col + '" stroke-width="2"/>' +
+      '<circle cx="' + X(v.length - 1).toFixed(1) + '" cy="' + Y(v[v.length - 1]).toFixed(1) + '" r="3.5" fill="' + col + '"/>' +
+      '</svg>';
+  }
+
+  function renderCards() {
+    var totVol = rows.reduce(function (s, r) { return s + (r.vol > 0 ? r.vol : 0); }, 0);
+    var withChg = rows.filter(function (r) { return pct(r) !== null; });
+    var g = withChg.slice().sort(function (a, b) { return pct(b) - pct(a); })[0];
+    var l = withChg.slice().sort(function (a, b) { return pct(a) - pct(b); })[0];
+    $('c-count').textContent = rows.length;
+    $('c-vol').textContent = big(totVol);
+    $('c-gain').innerHTML = g ? (sign(pct(g)) + Math.round(pct(g)) + '% <small>' + g.name + '</small>') : '—';
+    $('c-lose').innerHTML = l ? (Math.round(pct(l)) + '% <small>' + l.name + '</small>') : '—';
+  }
+
+  function renderList() {
+    var q = ($('mkt-search').value || '').toLowerCase();
+    var list = rows.filter(function (r) { return r.name.toLowerCase().indexOf(q) >= 0; });
+    list.sort(function (a, b) {
+      if (sortKey === 'name') return a.name.localeCompare(b.name);
+      if (sortKey === 'price') return b.price - a.price;
+      if (sortKey === 'chg') { var pa = pct(a), pb = pct(b); return (pb === null ? -1e9 : pb) - (pa === null ? -1e9 : pa); }
+      return (b.vol || 0) - (a.vol || 0);
+    });
+    var tb = $('mkt-body');
+    if (!list.length) { tb.innerHTML = '<tr><td colspan="7" class="mkt-state">' + L.empty + '</td></tr>'; return; }
+    tb.innerHTML = list.map(function (r) {
+      var p = pct(r), c = cls(p);
+      return '<tr data-n="' + encodeURIComponent(r.name) + '">' +
+        '<td class="l name">' + r.name + '</td>' +
+        '<td class="r num">' + money(r.price) + '</td>' +
+        '<td class="r num ' + c + '">' + (p === null ? '—' : sign(p) + p.toFixed(1) + '%') + '</td>' +
+        '<td class="c">' + spark(r.hist, 88, 26) + '</td>' +
+        '<td class="r num dim">' + (r.vol > 0 ? r.vol.toLocaleString() : '—') + '</td>' +
+        '<td class="r num dim hide-sm">' + r.qty.toLocaleString() + '</td>' +
+        '<td class="r num dim hide-sm">' + (r.median > 0 ? money(r.median) : '—') + '</td>' +
+        '</tr>';
+    }).join('');
+    Array.prototype.forEach.call(tb.querySelectorAll('tr[data-n]'), function (tr) {
+      tr.addEventListener('click', function () { location.hash = 'i=' + tr.getAttribute('data-n'); });
+    });
+  }
+
+  function renderDetail(r) {
+    var p = pct(r), c = cls(p);
+    var raw = (r.hist || []).map(function (x) { return x[1]; });
+    var hi = raw.length ? Math.max.apply(null, raw) : 0, lo = raw.length ? Math.min.apply(null, raw) : 0;
+    var d = $('mkt-detail');
+    d.innerHTML =
+      '<button class="mkt-back" id="mkt-back">&larr; ' + L.back + '</button>' +
+      '<div class="mkt-dhead">' +
+        '<h2 class="mkt-dname">' + r.name + '</h2>' +
+        '<div class="mkt-dprice">' + money(r.price) +
+          (p === null ? '' : ' <span class="mkt-dchg ' + c + '">' + sign(p) + p.toFixed(2) + '%</span>') +
+        '</div>' +
+      '</div>' +
+      '<div class="mkt-chartbox">' + bigChart(r) + '</div>' +
+      '<div class="mkt-stats">' +
+        stat(L.chg24, p === null ? '—' : sign(p) + p.toFixed(2) + '%', c) +
+        stat(L.vol24, r.vol > 0 ? r.vol.toLocaleString() : '—', '') +
+        stat(L.median, r.median > 0 ? money(r.median) : '—', '') +
+        stat(L.listings, r.qty.toLocaleString(), '') +
+        stat(L.hi, money(hi), '') +
+        stat(L.lo, money(lo), '') +
+      '</div>';
+    $('mkt-back').addEventListener('click', function () { location.hash = ''; });
+  }
+  function stat(label, val, c) {
+    return '<div class="mkt-stat"><span class="mkt-stat-l">' + label + '</span><span class="mkt-stat-v ' + c + '">' + val + '</span></div>';
+  }
+
+  function route() {
+    var h = location.hash.replace(/^#/, '');
+    var m = /^i=(.+)$/.exec(h);
+    if (m && rows.length) {
+      var name = decodeURIComponent(m[1]);
+      var r = rows.find(function (x) { return x.name === name; });
+      if (r) {
+        $('mkt-list').hidden = true; $('mkt-detail').hidden = false;
+        renderDetail(r); window.scrollTo(0, 0); return;
+      }
+    }
+    $('mkt-detail').hidden = true; $('mkt-list').hidden = false;
+  }
+
+  $('mkt-search').addEventListener('input', renderList);
+  $('mkt-sort').addEventListener('change', function (e) { sortKey = e.target.value; renderList(); });
+  window.addEventListener('hashchange', route);
+
+  function load(url, isFallback) {
+    return fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
+  }
+  load(PRIMARY).catch(function () { return load(FALLBACK); }).then(function (data) {
+    var items = data.items || {};
+    rows = Object.keys(items).map(function (k) {
+      var v = items[k];
+      return {
+        name: k, price: v.lowestCents || 0, prev: (v.prevCents != null ? v.prevCents : -1),
+        qty: v.qty || 0, vol: (v.vol != null ? v.vol : -1), median: (v.medianCents != null ? v.medianCents : -1),
+        hist: v.hist || [],
+      };
+    }).filter(function (r) { return r.price > 0; });
+    cachedAt = data.cachedAt || 0;
+    var ageMin = cachedAt ? Math.round((Date.now() - cachedAt) / 60000) : null;
+    $('mkt-sub').textContent = rows.length + ' · ' + (ageMin != null ? L.updated.replace('{m}', ageMin) : L.tagline);
+    renderCards(); renderList(); route();
+  }).catch(function (e) {
+    $('mkt-body').innerHTML = '<tr><td colspan="7" class="mkt-state err">' + L.error + ' (' + e.message + ')</td></tr>';
+  });
+})();
+</script>
+
+<style>
+.mkt{
+  --d-bg:#0a0e16; --d-panel:#111722; --d-panel2:#0e141d; --d-line:#1d2633;
+  --d-ink:#e7ecf3; --d-muted:#8b97a8; --d-dim:#5d6878;
+  --up:#36d399; --down:#f06d6d; --up-fill:rgba(54,211,153,.10); --down-fill:rgba(240,109,109,.10);
+  background:var(--d-bg); color:var(--d-ink); min-height:calc(100vh - 64px);
+  font-family:'Inter','Segoe UI',system-ui,sans-serif;
+}
+.mkt-wrap{max-width:1180px;margin:0 auto;padding:26px 24px 80px}
+.mkt-top{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:22px}
+.mkt-title{font-size:26px;font-weight:800;letter-spacing:-.5px;line-height:1}
+.mkt-accent{color:var(--accent)}
+.mkt-sub{display:block;margin-top:7px;font-size:13px;color:var(--d-muted);font-family:'JetBrains Mono',monospace}
+.mkt-controls{display:flex;gap:10px}
+.mkt-controls input,.mkt-controls select{
+  background:var(--d-panel);border:1px solid var(--d-line);color:var(--d-ink);
+  height:38px;border-radius:9px;padding:0 13px;font-size:14px;font-family:inherit;outline:none;
+}
+.mkt-controls input{width:220px}
+.mkt-controls input:focus,.mkt-controls select:focus{border-color:#33415a}
+.mkt-controls input::placeholder{color:var(--d-dim)}
+.mkt-controls select{cursor:pointer}
+
+.mkt-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.mkt-card{background:var(--d-panel);border:1px solid var(--d-line);border-radius:13px;padding:15px 17px;display:flex;flex-direction:column;gap:7px;min-width:0}
+.mkt-card-l{font-size:12px;color:var(--d-muted);text-transform:uppercase;letter-spacing:.6px}
+.mkt-card-v{font-size:25px;font-weight:800;letter-spacing:-.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mkt-card-v small{font-size:12px;font-weight:500;color:var(--d-muted);margin-left:6px}
+.mkt-card-v.up{color:var(--up)} .mkt-card-v.down{color:var(--down)}
+
+.mkt-hint{font-size:12px;color:var(--d-dim);margin:0 0 9px;font-family:'JetBrains Mono',monospace}
+.mkt-table-wrap{border:1px solid var(--d-line);border-radius:13px;overflow:hidden;background:var(--d-panel2)}
+.mkt-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.mkt-table thead th{background:var(--d-panel);color:var(--d-muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.5px;padding:11px 14px;position:sticky;top:0}
+.mkt-table th.l,.mkt-table td.l{text-align:left}
+.mkt-table th.r,.mkt-table td.r{text-align:right}
+.mkt-table th.c,.mkt-table td.c{text-align:center}
+.mkt-table tbody tr{border-top:1px solid var(--d-line);cursor:pointer;transition:background .1s}
+.mkt-table tbody tr:hover{background:#151c28}
+.mkt-table td{padding:9px 14px;vertical-align:middle}
+.mkt-table td.name{font-weight:500;max-width:340px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mkt-table td.num{font-variant-numeric:tabular-nums;font-family:'JetBrains Mono',monospace;font-size:13px}
+.mkt-table td.dim{color:var(--d-muted)}
+.mkt-table td.up,.mkt-stat-v.up,.mkt-dchg.up{color:var(--up)}
+.mkt-table td.down,.mkt-stat-v.down,.mkt-dchg.down{color:var(--down)}
+.spark.up polyline{stroke:var(--up)} .spark.down polyline{stroke:var(--down)}
+.mkt-state{text-align:center;padding:30px;color:var(--d-dim)}
+.mkt-state.err{color:var(--down)}
+
+.mkt-back{background:none;border:1px solid var(--d-line);color:var(--d-muted);font:inherit;font-size:13px;padding:7px 14px;border-radius:8px;cursor:pointer;margin-bottom:18px}
+.mkt-back:hover{color:var(--d-ink);border-color:#33415a}
+.mkt-dhead{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.mkt-dname{font-size:24px;font-weight:800;letter-spacing:-.5px}
+.mkt-dprice{font-size:26px;font-weight:800;font-family:'JetBrains Mono',monospace}
+.mkt-dchg{font-size:16px;font-weight:700;margin-left:8px}
+.mkt-chartbox{background:var(--d-panel2);border:1px solid var(--d-line);border-radius:13px;padding:14px 8px 6px;margin-bottom:18px}
+.bigchart{width:100%;height:260px;display:block}
+.bigchart .grid{stroke:var(--d-line);stroke-width:1}
+.bigchart .axis{fill:var(--d-dim);font-size:11px;font-family:'JetBrains Mono',monospace}
+.mkt-nochart{color:var(--d-dim);text-align:center;padding:60px}
+.mkt-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.mkt-stat{background:var(--d-panel);border:1px solid var(--d-line);border-radius:11px;padding:13px 15px;display:flex;flex-direction:column;gap:6px}
+.mkt-stat-l{font-size:11px;color:var(--d-muted);text-transform:uppercase;letter-spacing:.5px}
+.mkt-stat-v{font-size:18px;font-weight:700;font-family:'JetBrains Mono',monospace}
+
+@media(max-width:860px){
+  .mkt-cards{grid-template-columns:repeat(2,1fr)}
+  .mkt-stats{grid-template-columns:repeat(3,1fr)}
+  .mkt-controls input{width:150px}
+  .hide-sm{display:none}
+}
+@media(max-width:520px){
+  .mkt-stats{grid-template-columns:repeat(2,1fr)}
+  .mkt-top{flex-direction:column;align-items:stretch}
+}
+</style>

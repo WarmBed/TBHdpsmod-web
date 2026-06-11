@@ -8,10 +8,14 @@ const { locale, path } = Astro.props;
 const t = getDict(locale).nav;
 const home = localizedPath(locale, '/');
 const releases = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`;
+const marketLabel: Record<Locale, string> = {
+  en: 'Market', 'zh-Hant': '市場', 'zh-Hans': '市场', ja: 'マーケット', es: 'Mercado',
+};
 ---
 <nav><div class="wrap row">
   <a class="logo" href={home}><span class="mk">⚔</span> TBH DPS Meter</a>
   <a class="lnk" href={`${home}#features`}>{t.features}</a>
+  <a class="lnk" href={localizedPath(locale, '/market')}>{marketLabel[locale]}</a>
   <a class="lnk" href={localizedPath(locale, '/install')}>{t.install}</a>
   <a class="lnk" href={`${home}#faq`}>{t.faq}</a>
   <span class="spacer"></span>

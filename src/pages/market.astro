@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import Market from '../components/Market.astro';
+const locale = 'en' as const;
+---
+<BaseLayout
+  locale={locale}
+  path="/market"
+  title="TBH Market — live TaskBarHero item prices & volume"
+  description="Live market board for TaskBarHero: item prices, 24h volume, and 7-day price trends, sourced from the Steam community market.">
+  <Market locale={locale} />
+</BaseLayout>
