@@ -12,8 +12,6 @@ const STRINGS: Record<Locale, T> = {
   es: { search: 'Buscar objetos…', name: 'Nombre', lastChg: 'Precio/Cambio', line: 'Línea', candle: 'Velas', items: 'objetos', live: 'vivo', demo: 'demo', ago: 'atrás', loading: 'Cargando…', noMatch: 'Sin resultados', clickItem: 'Selecciona un objeto →', open: 'Apert', high: 'Máx', low: 'Mín', median: 'Mediana', vol24: 'Vol 24h', listings: 'Ofertas', orderBook: 'Libro', noOrderBook: 'Sin libro', noHistory: 'Sin historial', loadFail: 'Error al cargar', medianSale: 'precio mediano', theme: 'Tema' },
 };
 const T = STRINGS[locale];
-// tbh-market steam_history is JPY (median sale price). Convert to USD cents for one consistent currency.
-const FX = 150;   // approx JPY per USD
 const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
 ---
 
@@ -41,7 +39,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   </div>
 </section>
 
-<script is:inline define:vars={{ T, FX, RAW }}>
+<script is:inline define:vars={{ T, RAW }}>
 (function () {
   var UP = '#26d07c', DOWN = '#f0616d', UPF = 'rgba(38,208,124,.13)', DNF = 'rgba(240,97,109,.13)';
   var MA = [{ p: 5, c: '#e6e8ec' }, { p: 10, c: '#f5b942' }, { p: 30, c: '#c66bd6' }];
@@ -69,7 +67,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     for (var i = 0; i < n; i += sz) {
       var seg = hist.slice(i, i + sz); if (!seg.length) continue;
       var o = seg[0][1], c = seg[seg.length - 1][1], hi = o, lo = o, v = 0;
-      for (var j = 0; j < seg.length; j++) { var px = seg[j][1]; if (px > hi) hi = px; if (px < lo) lo = px; v += seg[j][2]; }
+      for (var j = 0; j < seg.length; j++) { var px = seg[j][1]; if (px > hi) hi = px; if (px < lo) lo = px; v += seg[j][2] || 0; }
       out.push({ t: seg[seg.length - 1][0], o: o, h: hi, l: lo, c: c, v: v });
     }
     return out;
@@ -155,10 +153,10 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   function statsBar(it, hist) {
     var n = hist.length, last = hist[n - 1], cutoff = last[0] - 86400, w = hist.filter(function (x) { return x[0] >= cutoff; });
     if (w.length < 2) w = hist;
-    var pr = w.map(function (x) { return x[1]; }), vol = w.reduce(function (s, x) { return s + x[2]; }, 0);
+    var pr = w.map(function (x) { return x[1]; });
     function s(l, v, cls) { return '<span class="hs"><i>' + l + '</i><b class="' + (cls || '') + '">' + v + '</b></span>'; }
     return s(T.open, money(w[0][1])) + s(T.high, money(Math.max.apply(null, pr)), 'up') + s(T.low, money(Math.min.apply(null, pr)), 'down') +
-      s(T.median, money(it.median)) + s(T.vol24, big(vol)) + s(T.listings, it.listings.toLocaleString());
+      s(T.median, money(it.median)) + s(T.vol24, big(it.vol || 0)) + s(T.listings, it.listings.toLocaleString());
   }
 
   function renderPanel(el, hash, i) {
@@ -208,13 +206,15 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
 
   function drawChart(box, legend, d) {
     var W = box.clientWidth || 520, H = box.clientHeight || 300;
-    var padR = 50, padB = 16, volH = Math.round(H * 0.22), gap = 8, priceH = H - volH - padB - gap;
+    var hasVol = d.hist.some(function (x) { return x[2] > 0; });
+    var padR = 50, padB = 16, volH = hasVol ? Math.round(H * 0.22) : 0, gap = hasVol ? 8 : 0, priceH = H - volH - padB - gap;
     var iw = W - padR;
     var ma5 = cvar('--ma5') || '#888';
     var mas = MA.map(function (m, i) { return { c: i === 0 ? ma5 : m.c, p: m.p }; });
     if (tf === 'line') return drawLine(box, legend, d, W, H, iw, priceH, volH, padB, gap);
 
     var cp = cleanVals(d.hist.map(function (x) { return x[1]; }));
+    cp[cp.length - 1] = d.hist[d.hist.length - 1][1];   // never clamp the current price — chart must end at the header
     var chist = d.hist.map(function (x, i) { return [x[0], cp[i], x[2]]; });
     var cnd = toCandles(chist, Math.min(120, Math.max(30, Math.floor(iw / 6))));
     var n = cnd.length, closes = cnd.map(function (k) { return k.c; });
@@ -250,10 +250,12 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     var ind = poly(bb.up, BOLLC.band, 1) + poly(bb.lo, BOLLC.band, 1) + poly(bb.mid, ma5, 1, true);
     mas.forEach(function (m) { ind += poly(m.v, m.c, 1.2); });
     var vol = '';
-    for (var j = 0; j < n; j++) { var kk = cnd[j], upj = kk.c >= kk.o; vol += '<rect x="' + (X(j) - bw / 2).toFixed(1) + '" y="' + VY(kk.v).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + (vy0 - VY(kk.v)).toFixed(1) + '" fill="' + (upj ? UP : DOWN) + '" opacity="0.5"/>'; }
-    var vols = cnd.map(function (k) { return k.v; }), mav5 = sma(vols, 5), mav10 = sma(vols, 10);
-    function vpoly(arr, col) { var pts = ''; for (var i = 0; i < arr.length; i++) if (arr[i] != null) pts += X(i).toFixed(1) + ',' + VY(arr[i]).toFixed(1) + ' '; return pts ? '<polyline points="' + pts.trim() + '" fill="none" stroke="' + col + '" stroke-width="1"/>' : ''; }
-    vol += vpoly(mav5, '#f5b942') + vpoly(mav10, '#c66bd6');
+    if (hasVol) {
+      for (var j = 0; j < n; j++) { var kk = cnd[j], upj = kk.c >= kk.o; vol += '<rect x="' + (X(j) - bw / 2).toFixed(1) + '" y="' + VY(kk.v).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + (vy0 - VY(kk.v)).toFixed(1) + '" fill="' + (upj ? UP : DOWN) + '" opacity="0.5"/>'; }
+      var vols = cnd.map(function (k) { return k.v; }), mav5 = sma(vols, 5), mav10 = sma(vols, 10);
+      function vpoly(arr, col) { var pts = ''; for (var i = 0; i < arr.length; i++) if (arr[i] != null) pts += X(i).toFixed(1) + ',' + VY(arr[i]).toFixed(1) + ' '; return pts ? '<polyline points="' + pts.trim() + '" fill="none" stroke="' + col + '" stroke-width="1"/>' : ''; }
+      vol += vpoly(mav5, '#f5b942') + vpoly(mav10, '#c66bd6');
+    }
 
     var dt0 = new Date(cnd[0].t * 1000), dt1 = new Date(cnd[n - 1].t * 1000);
     function md(x) { return (x.getMonth() + 1) + '/' + x.getDate(); }
@@ -261,14 +263,15 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
 
     box.insertAdjacentHTML('afterbegin', '<svg class="p-svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '">' +
       grid + ind + sticks +
-      '<line x1="0" y1="' + vy0 + '" x2="' + iw + '" y2="' + vy0 + '" class="g"/>' + vol +
+      (hasVol ? '<line x1="0" y1="' + vy0 + '" x2="' + iw + '" y2="' + vy0 + '" class="g"/>' : '') + vol +
       '<line class="cx" x1="0" y1="4" x2="0" y2="' + (4 + priceH) + '" opacity="0"/><line class="cxv" x1="0" y1="' + (vy0 - volH) + '" x2="0" y2="' + vy0 + '" opacity="0"/>' +
       axis + '</svg>');
 
     function legendFor(idx) {
       var k = cnd[idx];
       var h = '<span class="lg-d">' + md(new Date(k.t * 1000)) + '</span>' +
-        '<span>O<b>' + money(k.o) + '</b></span><span>H<b class="up">' + money(k.h) + '</b></span><span>L<b class="down">' + money(k.l) + '</b></span><span>C<b>' + money(k.c) + '</b></span><span>V<b>' + big(k.v) + '</b></span>';
+        '<span>O<b>' + money(k.o) + '</b></span><span>H<b class="up">' + money(k.h) + '</b></span><span>L<b class="down">' + money(k.l) + '</b></span><span>C<b>' + money(k.c) + '</b></span>' +
+        (hasVol ? '<span>V<b>' + big(k.v) + '</b></span>' : '');
       h += '<span class="lg-sep"></span>';
       mas.forEach(function (m) { h += '<span style="color:' + m.c + '">MA' + m.p + ' ' + (m.v[idx] != null ? money(m.v[idx]) : '—') + '</span>'; });
       h += '<span style="color:' + BOLLC.band + '">BOLL ' + (bb.mid[idx] != null ? money(bb.mid[idx]) : '—') + '</span>';
@@ -293,8 +296,10 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
 
   function drawLine(box, legend, d, W, H, iw, priceH, volH, padB, gap) {
     var hist = d.hist, n = hist.length;
-    var pv = cleanVals(hist.map(function (x) { return x[1]; })), pmn = Math.min.apply(null, pv), pmx = Math.max.apply(null, pv), pr = (pmx - pmn) || 1;
-    var vols = hist.map(function (x) { return x[2]; }), vmx = Math.max(1, Math.max.apply(null, vols)), vy0 = H - padB, padR = W - iw;
+    var pv = cleanVals(hist.map(function (x) { return x[1]; }));
+    pv[pv.length - 1] = hist[hist.length - 1][1];   // keep the chart ending at the current price
+    var pmn = Math.min.apply(null, pv), pmx = Math.max.apply(null, pv), pr = (pmx - pmn) || 1;
+    var vols = hist.map(function (x) { return x[2] || 0; }), vmx = Math.max(1, Math.max.apply(null, vols)), vy0 = H - padB, padR = W - iw, hasVol = volH > 0;
     function X(i) { return (i / (n - 1)) * iw; }
     function PY(v) { return 4 + priceH - ((v - pmn) / pr) * priceH; }
     var line = '', i;
@@ -304,9 +309,9 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     var grid = '', axis = '';
     [0, 0.5, 1].forEach(function (f) { var val = pmn + f * pr, y = PY(val); grid += '<line x1="0" y1="' + y.toFixed(1) + '" x2="' + iw + '" y2="' + y.toFixed(1) + '" class="g"/>'; axis += '<text x="' + (W - padR + 4) + '" y="' + (y + 3).toFixed(1) + '" class="ax">' + money(val) + '</text>'; });
     var vol = '';
-    for (i = 0; i < n; i++) { var bh = (vols[i] / vmx) * volH, bw = Math.max(0.6, iw / n - 0.4); vol += '<rect x="' + X(i).toFixed(1) + '" y="' + (vy0 - bh).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + bh.toFixed(1) + '" fill="' + col + '" opacity="0.35"/>'; }
+    if (hasVol) for (i = 0; i < n; i++) { var bh = (vols[i] / vmx) * volH, bw = Math.max(0.6, iw / n - 0.4); vol += '<rect x="' + X(i).toFixed(1) + '" y="' + (vy0 - bh).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + bh.toFixed(1) + '" fill="' + col + '" opacity="0.35"/>'; }
     box.insertAdjacentHTML('afterbegin', '<svg class="p-svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '">' + grid +
-      '<line x1="0" y1="' + vy0 + '" x2="' + iw + '" y2="' + vy0 + '" class="g"/>' + vol +
+      (hasVol ? '<line x1="0" y1="' + vy0 + '" x2="' + iw + '" y2="' + vy0 + '" class="g"/>' : '') + vol +
       '<path d="' + area + '" fill="' + (up ? UPF : DNF) + '"/><path d="' + line + '" fill="none" stroke="' + col + '" stroke-width="1.5"/>' + axis + '</svg>');
     legend.innerHTML = '<span class="lg-d">' + T.line + '</span><span>' + T.medianSale + ' · ' + n + ' pts</span>';
   }
@@ -332,12 +337,13 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(renderGrid, 150); });
 
   var LIVE = false, detailCache = {};
-  function conv(d) { if (d && d.hist) d.hist = d.hist.map(function (p) { return [p[0], Math.round(p[1] / FX * 100), p[2]]; }); return d; }
+  function conv(d) { return d; }   // data is already USD cents (from our Steam prices.json)
   function getDetail(it) {
     var h = it.hash;
     if (detailCache[h] !== undefined) return Promise.resolve(detailCache[h]);
     if (!LIVE) { detailCache[h] = conv((fix.detail && fix.detail[h]) || null); return Promise.resolve(detailCache[h]); }
-    return fetch(RAW + '/detail/' + it.slug + '.json').then(function (r) { if (!r.ok) throw 0; return r.json(); })
+    // tie the detail cache key to the loaded market snapshot so the chart never lags the header
+    return fetch(RAW + '/detail/' + it.slug + '.json?v=' + ((fix && fix.builtAt) || '')).then(function (r) { if (!r.ok) throw 0; return r.json(); })
       .then(function (d) { detailCache[h] = conv(d); return detailCache[h]; }).catch(function () { detailCache[h] = null; return null; });
   }
 
