@@ -1,6 +1,16 @@
 :{$PORT:8080} {
 	root * /usr/share/caddy
 	encode gzip zstd
+
+	# Astro build assets are content-hashed → immutable. Cache for a year so repeat visits
+	# (and any CDN in front) never re-fetch or revalidate them.
+	@immutable path /_astro/*
+	header @immutable Cache-Control "public, max-age=31536000, immutable"
+
+	# other static assets (og image, favicon, fonts, public/ images) — cache a week
+	@assets path *.webp *.png *.jpg *.jpeg *.svg *.ico *.woff *.woff2
+	header @assets Cache-Control "public, max-age=604800"
+
 	try_files {path} {path}/index.html {path}.html
 	file_server
 	handle_errors {
