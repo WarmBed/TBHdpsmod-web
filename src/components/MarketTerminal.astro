@@ -5,7 +5,7 @@ const { locale } = Astro.props;
 
 type T = Record<string, string>;
 const STRINGS: Record<Locale, T> = {
-  en: { search: 'Search watchlist…', name: 'Name', lastChg: 'Last / Chg', line: 'Line', candle: 'Candle', items: 'items', live: 'live', demo: 'demo', ago: 'ago', loading: 'Loading…', noMatch: 'No match', clickItem: 'Click a watchlist item →', open: 'Open', high: 'High', low: 'Low', median: 'Median', vol24: '24h vol', listings: 'Listings', orderBook: 'Order book', noOrderBook: 'No order book', noHistory: 'No price history', loadFail: 'Load failed', medianSale: 'median sale price', theme: 'Toggle theme' },
+  en: { search: 'Search watchlist…', name: 'Name', lastChg: 'Last / Chg', price: 'Price', chg: 'Chg', line: 'Line', candle: 'Candle', items: 'items', live: 'live', demo: 'demo', ago: 'ago', loading: 'Loading…', noMatch: 'No match', clickItem: 'Click a watchlist item →', open: 'Open', high: 'High', low: 'Low', median: 'Median', vol24: '24h vol', listings: 'Listings', orderBook: 'Order book', noOrderBook: 'No order book', noHistory: 'No price history', loadFail: 'Load failed', medianSale: 'median sale price', theme: 'Toggle theme' },
   'zh-Hant': { search: '搜尋物品…', name: '名稱', lastChg: '現價/漲跌', line: '分時', candle: '日K', items: '個', live: '即時', demo: '範例', ago: '前', loading: '載入中…', noMatch: '無符合', clickItem: '點左側物品 →', open: '開', high: '高', low: '低', median: '中位', vol24: '24h量', listings: '在售', orderBook: '掛單簿', noOrderBook: '無掛單', noHistory: '無歷史', loadFail: '載入失敗', medianSale: '中位成交價', theme: '切換深淺色' },
   'zh-Hans': { search: '搜索物品…', name: '名称', lastChg: '现价/涨跌', line: '分时', candle: '日K', items: '个', live: '实时', demo: '示例', ago: '前', loading: '加载中…', noMatch: '无匹配', clickItem: '点左侧物品 →', open: '开', high: '高', low: '低', median: '中位', vol24: '24h量', listings: '在售', orderBook: '挂单簿', noOrderBook: '无挂单', noHistory: '无历史', loadFail: '加载失败', medianSale: '中位成交价', theme: '切换深浅色' },
   ja: { search: 'アイテム検索…', name: '名前', lastChg: '価格/変動', line: '時系列', candle: '日足', items: '件', live: 'リアル', demo: 'デモ', ago: '前', loading: '読み込み中…', noMatch: '該当なし', clickItem: '左のアイテムを選択 →', open: '始', high: '高', low: '安', median: '中央', vol24: '24h量', listings: '出品', orderBook: '板情報', noOrderBook: '板なし', noHistory: '履歴なし', loadFail: '読み込み失敗', medianSale: '中央販売価格', theme: 'テーマ切替' },
@@ -20,8 +20,17 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     <div class="term-brand">TBH <span class="ta">Terminal</span> <span class="tbadge">beta</span></div>
     <input id="t-search" type="text" placeholder={T.search} autocomplete="off" />
     <div class="term-tf" id="t-tf">
-      <button data-tf="line">{T.line}</button>
-      <button data-tf="k" class="on">{T.candle}</button>
+      <button data-tf="30">{T.line}</button>
+      <button data-tf="60">1H</button>
+      <button data-tf="120">2H</button>
+      <button data-tf="240" class="on">4H</button>
+      <button data-tf="480">8H</button>
+      <button data-tf="1440">1D</button>
+      <button data-tf="4320">3D</button>
+    </div>
+    <div class="term-tf" id="t-ind">
+      <button data-ind="ma" class="on">MA</button>
+      <button data-ind="boll" class="on">BOLL</button>
     </div>
     <div class="term-layouts">
       <button data-layout="4" class="on">2×2</button>
@@ -44,7 +53,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   var UP = '#26d07c', DOWN = '#f0616d', UPF = 'rgba(38,208,124,.13)', DNF = 'rgba(240,97,109,.13)';
   var MA = [{ p: 5, c: '#e6e8ec' }, { p: 10, c: '#f5b942' }, { p: 30, c: '#c66bd6' }];
   var BOLLC = { mid: '#e6e8ec', band: '#3aa0e0' };
-  var fix = null, panels = [null, null, null, null], active = 0, layout = '4', tf = 'k';
+  var fix = null, panels = [null, null, null, null], active = 0, layout = '4', tf = 240, showMA = true, showBOLL = true;
   var $ = function (id) { return document.getElementById(id); };
   var termEl = document.querySelector('.term');
   function cvar(n) { return getComputedStyle(termEl).getPropertyValue(n).trim(); }
@@ -71,6 +80,17 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
       out.push({ t: seg[seg.length - 1][0], o: o, h: hi, l: lo, c: c, v: v });
     }
     return out;
+  }
+  // group points into fixed time buckets (periodSec) → real OHLC per period
+  function bucketByPeriod(hist, periodSec) {
+    var map = {}, order = [];
+    for (var i = 0; i < hist.length; i++) {
+      var p = hist[i], b = Math.floor(p[0] / periodSec);
+      if (!map[b]) { map[b] = { t: p[0], o: p[1], h: p[1], l: p[1], c: p[1], v: 0 }; order.push(b); }
+      var k = map[b]; if (p[1] > k.h) k.h = p[1]; if (p[1] < k.l) k.l = p[1]; k.c = p[1]; k.t = p[0]; k.v += p[2] || 0;
+    }
+    order.sort(function (a, b) { return a - b; });
+    return order.map(function (b) { return map[b]; });
   }
   function sma(vals, p) {
     var out = new Array(vals.length).fill(null), s = 0;
@@ -211,12 +231,12 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     var iw = W - padR;
     var ma5 = cvar('--ma5') || '#888';
     var mas = MA.map(function (m, i) { return { c: i === 0 ? ma5 : m.c, p: m.p }; });
-    if (tf === 'line') return drawLine(box, legend, d, W, H, iw, priceH, volH, padB, gap);
+    if (tf === 30) return drawLine(box, legend, d, W, H, iw, priceH, volH, padB, gap);
 
     var cp = cleanVals(d.hist.map(function (x) { return x[1]; }));
     cp[cp.length - 1] = d.hist[d.hist.length - 1][1];   // never clamp the current price — chart must end at the header
     var chist = d.hist.map(function (x, i) { return [x[0], cp[i], x[2]]; });
-    var cnd = toCandles(chist, Math.min(120, Math.max(30, Math.floor(iw / 6))));
+    var cnd = bucketByPeriod(chist, tf * 60);
     var n = cnd.length, closes = cnd.map(function (k) { return k.c; });
     mas.forEach(function (m) { m.v = sma(closes, m.p); });
     var bb = boll(closes, 20, 2);
@@ -247,8 +267,9 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
       for (var i = 0; i < arr.length; i++) if (arr[i] != null) pts += X(i).toFixed(1) + ',' + PY(arr[i]).toFixed(1) + ' ';
       return pts ? '<polyline points="' + pts.trim() + '" fill="none" stroke="' + col + '" stroke-width="' + (w || 1) + '"' + (dash ? ' stroke-dasharray="3 3"' : '') + ' opacity="0.9"/>' : '';
     }
-    var ind = poly(bb.up, BOLLC.band, 1) + poly(bb.lo, BOLLC.band, 1) + poly(bb.mid, ma5, 1, true);
-    mas.forEach(function (m) { ind += poly(m.v, m.c, 1.2); });
+    var ind = '';
+    if (showBOLL) ind += poly(bb.up, BOLLC.band, 1) + poly(bb.lo, BOLLC.band, 1) + poly(bb.mid, ma5, 1, true);
+    if (showMA) mas.forEach(function (m) { ind += poly(m.v, m.c, 1.2); });
     var vol = '';
     if (hasVol) {
       for (var j = 0; j < n; j++) { var kk = cnd[j], upj = kk.c >= kk.o; vol += '<rect x="' + (X(j) - bw / 2).toFixed(1) + '" y="' + VY(kk.v).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + (vy0 - VY(kk.v)).toFixed(1) + '" fill="' + (upj ? UP : DOWN) + '" opacity="0.5"/>'; }
@@ -273,8 +294,8 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
         '<span>O<b>' + money(k.o) + '</b></span><span>H<b class="up">' + money(k.h) + '</b></span><span>L<b class="down">' + money(k.l) + '</b></span><span>C<b>' + money(k.c) + '</b></span>' +
         (hasVol ? '<span>V<b>' + big(k.v) + '</b></span>' : '');
       h += '<span class="lg-sep"></span>';
-      mas.forEach(function (m) { h += '<span style="color:' + m.c + '">MA' + m.p + ' ' + (m.v[idx] != null ? money(m.v[idx]) : '—') + '</span>'; });
-      h += '<span style="color:' + BOLLC.band + '">BOLL ' + (bb.mid[idx] != null ? money(bb.mid[idx]) : '—') + '</span>';
+      if (showMA) mas.forEach(function (m) { h += '<span style="color:' + m.c + '">MA' + m.p + ' ' + (m.v[idx] != null ? money(m.v[idx]) : '—') + '</span>'; });
+      if (showBOLL) h += '<span style="color:' + BOLLC.band + '">BOLL ' + (bb.mid[idx] != null ? money(bb.mid[idx]) : '—') + '</span>';
       legend.innerHTML = h;
     }
     legendFor(n - 1);
@@ -328,8 +349,11 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   })();
 
   $('t-search').addEventListener('input', renderWatch);
-  Array.prototype.forEach.call(document.querySelectorAll('.term-tf button'), function (b) {
-    b.addEventListener('click', function () { document.querySelectorAll('.term-tf button').forEach(function (x) { x.classList.remove('on'); }); b.classList.add('on'); tf = b.getAttribute('data-tf'); renderGrid(); });
+  Array.prototype.forEach.call(document.querySelectorAll('#t-tf button'), function (b) {
+    b.addEventListener('click', function () { document.querySelectorAll('#t-tf button').forEach(function (x) { x.classList.remove('on'); }); b.classList.add('on'); tf = parseInt(b.getAttribute('data-tf'), 10); renderGrid(); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('#t-ind button'), function (b) {
+    b.addEventListener('click', function () { var k = b.getAttribute('data-ind'); if (k === 'ma') showMA = !showMA; else showBOLL = !showBOLL; b.classList.toggle('on'); renderGrid(); });
   });
   Array.prototype.forEach.call(document.querySelectorAll('.term-layouts button'), function (b) {
     b.addEventListener('click', function () { document.querySelectorAll('.term-layouts button').forEach(function (x) { x.classList.remove('on'); }); b.classList.add('on'); layout = b.getAttribute('data-layout'); if (layout === '1') active = 0; renderGrid(); });
