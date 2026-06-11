@@ -5,11 +5,11 @@ const { locale } = Astro.props;
 
 type T = Record<string, string>;
 const STRINGS: Record<Locale, T> = {
-  en: { search: 'Search watchlist…', name: 'Name', lastChg: 'Last / Chg', price: 'Price', chg: 'Chg', line: 'Line', candle: 'Candle', items: 'items', live: 'live', demo: 'demo', ago: 'ago', loading: 'Loading…', noMatch: 'No match', clickItem: 'Click a watchlist item →', open: 'Open', high: 'High', low: 'Low', median: 'Median', vol24: '24h vol', listings: 'Listings', orderBook: 'Order book', noOrderBook: 'No order book', noHistory: 'No price history', loadFail: 'Load failed', medianSale: 'median sale price', theme: 'Toggle theme', buySteam: 'Buy on Steam Market' },
-  'zh-Hant': { search: '搜尋物品…', name: '名稱', lastChg: '現價/漲跌', price: '現價', chg: '漲跌', line: '分時', candle: '日K', items: '個', live: '即時', demo: '範例', ago: '前', loading: '載入中…', noMatch: '無符合', clickItem: '點左側物品 →', open: '開', high: '高', low: '低', median: '中位', vol24: '24h量', listings: '在售', orderBook: '掛單簿', noOrderBook: '無掛單', noHistory: '無歷史', loadFail: '載入失敗', medianSale: '中位成交價', theme: '切換深淺色', buySteam: '前往 Steam 市集購買' },
-  'zh-Hans': { search: '搜索物品…', name: '名称', lastChg: '现价/涨跌', price: '现价', chg: '涨跌', line: '分时', candle: '日K', items: '个', live: '实时', demo: '示例', ago: '前', loading: '加载中…', noMatch: '无匹配', clickItem: '点左侧物品 →', open: '开', high: '高', low: '低', median: '中位', vol24: '24h量', listings: '在售', orderBook: '挂单簿', noOrderBook: '无挂单', noHistory: '无历史', loadFail: '加载失败', medianSale: '中位成交价', theme: '切换深浅色', buySteam: '前往 Steam 市集购买' },
-  ja: { search: 'アイテム検索…', name: '名前', lastChg: '価格/変動', price: '価格', chg: '変動', line: '時系列', candle: '日足', items: '件', live: 'リアル', demo: 'デモ', ago: '前', loading: '読み込み中…', noMatch: '該当なし', clickItem: '左のアイテムを選択 →', open: '始', high: '高', low: '安', median: '中央', vol24: '24h量', listings: '出品', orderBook: '板情報', noOrderBook: '板なし', noHistory: '履歴なし', loadFail: '読み込み失敗', medianSale: '中央販売価格', theme: 'テーマ切替', buySteam: 'Steamマーケットで購入' },
-  es: { search: 'Buscar objetos…', name: 'Nombre', lastChg: 'Precio/Cambio', price: 'Precio', chg: 'Cambio', line: 'Línea', candle: 'Velas', items: 'objetos', live: 'vivo', demo: 'demo', ago: 'atrás', loading: 'Cargando…', noMatch: 'Sin resultados', clickItem: 'Selecciona un objeto →', open: 'Apert', high: 'Máx', low: 'Mín', median: 'Mediana', vol24: 'Vol 24h', listings: 'Ofertas', orderBook: 'Libro', noOrderBook: 'Sin libro', noHistory: 'Sin historial', loadFail: 'Error al cargar', medianSale: 'precio mediano', theme: 'Tema', buySteam: 'Comprar en el Mercado de Steam' },
+  en: { search: 'Search watchlist…', name: 'Name', lastChg: 'Last / Chg', price: 'Price', chg: 'Chg', line: 'Line', candle: 'Candle', items: 'items', live: 'live', demo: 'demo', ago: 'ago', loading: 'Loading…', noMatch: 'No match', clickItem: 'Click a watchlist item →', open: 'Open', high: 'High', low: 'Low', median: 'Median', vol24: '24h vol', listings: 'Listings', orderBook: 'Order book', noOrderBook: 'No order book', noHistory: 'No price history', loadFail: 'Load failed', medianSale: 'median sale price', theme: 'Toggle theme', buySteam: 'Buy on Steam Market', heat: 'Heatmap' },
+  'zh-Hant': { search: '搜尋物品…', name: '名稱', lastChg: '現價/漲跌', price: '現價', chg: '漲跌', line: '分時', candle: '日K', items: '個', live: '即時', demo: '範例', ago: '前', loading: '載入中…', noMatch: '無符合', clickItem: '點左側物品 →', open: '開', high: '高', low: '低', median: '中位', vol24: '24h量', listings: '在售', orderBook: '掛單簿', noOrderBook: '無掛單', noHistory: '無歷史', loadFail: '載入失敗', medianSale: '中位成交價', theme: '切換深淺色', buySteam: '前往 Steam 市集購買', heat: '熱力圖' },
+  'zh-Hans': { search: '搜索物品…', name: '名称', lastChg: '现价/涨跌', price: '现价', chg: '涨跌', line: '分时', candle: '日K', items: '个', live: '实时', demo: '示例', ago: '前', loading: '加载中…', noMatch: '无匹配', clickItem: '点左侧物品 →', open: '开', high: '高', low: '低', median: '中位', vol24: '24h量', listings: '在售', orderBook: '挂单簿', noOrderBook: '无挂单', noHistory: '无历史', loadFail: '加载失败', medianSale: '中位成交价', theme: '切换深浅色', buySteam: '前往 Steam 市集购买', heat: '热力图' },
+  ja: { search: 'アイテム検索…', name: '名前', lastChg: '価格/変動', price: '価格', chg: '変動', line: '時系列', candle: '日足', items: '件', live: 'リアル', demo: 'デモ', ago: '前', loading: '読み込み中…', noMatch: '該当なし', clickItem: '左のアイテムを選択 →', open: '始', high: '高', low: '安', median: '中央', vol24: '24h量', listings: '出品', orderBook: '板情報', noOrderBook: '板なし', noHistory: '履歴なし', loadFail: '読み込み失敗', medianSale: '中央販売価格', theme: 'テーマ切替', buySteam: 'Steamマーケットで購入', heat: 'ヒート' },
+  es: { search: 'Buscar objetos…', name: 'Nombre', lastChg: 'Precio/Cambio', price: 'Precio', chg: 'Cambio', line: 'Línea', candle: 'Velas', items: 'objetos', live: 'vivo', demo: 'demo', ago: 'atrás', loading: 'Cargando…', noMatch: 'Sin resultados', clickItem: 'Selecciona un objeto →', open: 'Apert', high: 'Máx', low: 'Mín', median: 'Mediana', vol24: 'Vol 24h', listings: 'Ofertas', orderBook: 'Libro', noOrderBook: 'Sin libro', noHistory: 'Sin historial', loadFail: 'Error al cargar', medianSale: 'precio mediano', theme: 'Tema', buySteam: 'Comprar en el Mercado de Steam', heat: 'Calor' },
 };
 const T = STRINGS[locale];
 const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
@@ -37,6 +37,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     <div class="term-layouts">
       <button data-layout="4" class="on">2×2</button>
       <button data-layout="1">1</button>
+      <button data-layout="heat">{T.heat}</button>
     </div>
     <button id="t-theme" class="term-icon" title={T.theme} aria-label={T.theme}><svg viewBox="0 0 16 16" width="15" height="15"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.8 A6.2 6.2 0 0 1 8 14.2 Z" fill="currentColor"/></svg></button>
     <span id="t-meta" class="term-meta"></span>
@@ -73,6 +74,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     armor: { en: 'Armor', 'zh-Hant': '防具', 'zh-Hans': '防具', ja: '防具', es: 'Armadura' },
     accessory: { en: 'Accessory', 'zh-Hant': '飾品', 'zh-Hans': '饰品', ja: 'アクセ', es: 'Accesorio' },
     material: { en: 'Material', 'zh-Hant': '材料', 'zh-Hans': '材料', ja: '素材', es: 'Material' },
+    other: { en: 'Other', 'zh-Hant': '其他', 'zh-Hans': '其他', ja: 'その他', es: 'Otros' },
   };
   function fL(k) { return (FILT[k] && (FILT[k][LOCALE] || FILT[k].en)) || k; }
   var RARITY_L = {
@@ -169,14 +171,18 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     return 'rgb(' + r + ',' + g + ',' + b + ')';
   }
 
-  function renderWatch() {
+  function filteredRows() {
     var q = ($('t-search').value || '').toLowerCase();
-    var rows = fix.list.filter(function (it) {
+    return fix.list.filter(function (it) {
       if (q && it.name.toLowerCase().indexOf(q) < 0 && dispName(it).toLowerCase().indexOf(q) < 0) return false;
       if (catFilter && categoryOf(it) !== catFilter) return false;
       if (rarFilter && rarityOf(it.hash) !== rarFilter) return false;
       return true;
     });
+  }
+
+  function renderWatch() {
+    var rows = filteredRows();
     rows.sort(function (a, b) {
       if (sortKey === 'name') return sortDir * a.name.localeCompare(b.name);
       var av, bv;
@@ -203,13 +209,22 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     Array.prototype.forEach.call($('t-watch').querySelectorAll('.wl-row'), function (row) {
       row.addEventListener('click', function () { loadItem(decodeURIComponent(row.getAttribute('data-hash'))); });
     });
+    if (layout === 'heat') renderGrid();   // heatmap follows the same search/type/quality filters
   }
 
-  function loadItem(hash) { panels[active] = hash; renderGrid(); }   // load into the selected panel; click a panel to target it
+  function loadItem(hash) {
+    if (layout === 'heat') {   // picking from the watchlist while in heatmap → jump to a chart
+      layout = '4';
+      Array.prototype.forEach.call(document.querySelectorAll('.term-layouts button'), function (x) { x.classList.toggle('on', x.getAttribute('data-layout') === '4'); });
+      active = 0;
+    }
+    panels[active] = hash; renderGrid();   // load into the selected panel; click a panel to target it
+  }
   function paintActive() { Array.prototype.forEach.call($('t-grid').children, function (el, i) { el.classList.toggle('active', i === active); }); }
 
   function renderGrid() {
     var g = $('t-grid'); g.setAttribute('data-layout', layout);
+    if (layout === 'heat') { renderHeat(g); return; }
     var count = layout === '1' ? 1 : 4, html = '';
     for (var i = 0; i < count; i++) html += '<div class="panel" data-i="' + i + '"></div>';
     g.innerHTML = html;
@@ -218,6 +233,108 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
       renderPanel(el, panels[i], i);
     });
     paintActive();
+  }
+
+  // ---- Futu-style heatmap: area = 24h volume (sqrt-compressed), color = 24h change ----
+  function mixHex(a, b, t) {
+    function c(h, i) { return parseInt(h.slice(i, i + 2), 16); }
+    var r = Math.round(c(a, 1) + (c(b, 1) - c(a, 1)) * t), g = Math.round(c(a, 3) + (c(b, 3) - c(a, 3)) * t), bl = Math.round(c(a, 5) + (c(b, 5) - c(a, 5)) * t);
+    return 'rgb(' + r + ',' + g + ',' + bl + ')';
+  }
+  function heatColor(p) {
+    var light = termEl.getAttribute('data-theme') === 'light';
+    var neu = light ? '#e8ecf1' : '#2a323f', up = light ? '#3fbd80' : '#1f8a55', dn = light ? '#f0848d' : '#b53b46';
+    if (p == null) return light ? '#dfe3ea' : '#222a36';
+    var t = Math.min(1, Math.abs(p) / 3);   // saturate at ±3%, like the legend
+    return mixHex(neu, p >= 0 ? up : dn, t);
+  }
+  function squarify(items, x, y, w, h) {
+    var res = [], total = 0;
+    items.forEach(function (i) { total += i.wt; });
+    if (!total || w <= 4 || h <= 4) return res;
+    var scale = w * h / total, list = items.slice(), cx = x, cy = y, cw = w, ch = h;
+    function worst(row, side) {
+      var mx = 0, mn = Infinity, s = 0;
+      row.forEach(function (r) { var a = r.wt * scale; if (a > mx) mx = a; if (a < mn) mn = a; s += a; });
+      return Math.max(side * side * mx / (s * s), s * s / (side * side * mn));
+    }
+    while (list.length) {
+      var row = [list.shift()], side = Math.min(cw, ch);
+      while (list.length && worst(row.concat([list[0]]), side) <= worst(row, side)) row.push(list.shift());
+      var s = 0; row.forEach(function (r) { s += r.wt * scale; });
+      if (cw >= ch) {
+        var sw = s / ch, yy = cy;
+        row.forEach(function (r) { var hh = r.wt * scale / sw; res.push({ it: r, x: cx, y: yy, w: sw, h: hh }); yy += hh; });
+        cx += sw; cw -= sw;
+      } else {
+        var sh = s / cw, xx = cx;
+        row.forEach(function (r) { var ww = r.wt * scale / sh; res.push({ it: r, x: xx, y: cy, w: ww, h: sh }); xx += ww; });
+        cy += sh; ch -= sh;
+      }
+    }
+    return res;
+  }
+  function renderHeat(g) {
+    g.innerHTML = '<div class="hm"><div class="hm-leg"></div><div class="hm-area"></div><div class="hm-tip" hidden></div></div>';
+    var light = termEl.getAttribute('data-theme') === 'light';
+    g.querySelector('.hm-leg').innerHTML = [-3, -2, -1, 0, 1, 2, 3].map(function (p) {
+      return '<span style="background:' + heatColor(p) + ';color:' + (light ? '#0d1117' : '#e7ecf3') + '">' + (p > 0 ? '+' : '') + p + '%</span>';
+    }).join('');
+    var area = g.querySelector('.hm-area'), tip = g.querySelector('.hm-tip');
+    var W = area.clientWidth, H = area.clientHeight;
+    if (W < 50 || H < 50) return;
+    // sqrt compresses the volume range so low-volume items stay visible alongside the leaders
+    var rows = filteredRows().map(function (it) { return { it: it, wt: Math.sqrt((it.vol || 0) + 1) }; });
+    if (!rows.length) { area.innerHTML = '<div class="p-empty">' + T.noMatch + '</div>'; return; }
+    var byCat = {};
+    rows.forEach(function (r) { var c = categoryOf(r.it) || 'other'; (byCat[c] = byCat[c] || []).push(r); });
+    var groups = ['weapon', 'armor', 'accessory', 'material', 'other'].filter(function (c) { return byCat[c]; }).map(function (c) {
+      var its = byCat[c].sort(function (a, b) { return b.wt - a.wt; });
+      var wt = 0, wchg = 0, cw = 0;
+      its.forEach(function (r) { wt += r.wt; if (r.it.chg != null) { wchg += r.it.chg * r.wt; cw += r.wt; } });
+      return { cat: c, items: its, wt: wt, chg: cw ? wchg / cw : null };
+    }).sort(function (a, b) { return b.wt - a.wt; });
+    var html = '', HEAD = 17;
+    squarify(groups, 0, 0, W, H).forEach(function (gr) {
+      var grp = gr.it, hasHead = gr.h > 44 && gr.w > 60;
+      var gc = pctClass(grp.chg), gs = grp.chg != null && grp.chg >= 0 ? '+' : '';
+      if (hasHead) html += '<div class="hm-gh" style="left:' + gr.x.toFixed(1) + 'px;top:' + gr.y.toFixed(1) + 'px;width:' + gr.w.toFixed(1) + 'px">' + fL(grp.cat) +
+        (grp.chg != null ? ' <b class="' + gc + '">' + gs + grp.chg.toFixed(2) + '%</b>' : '') + '</div>';
+      var iy = gr.y + (hasHead ? HEAD : 0), ih = gr.h - (hasHead ? HEAD : 0);
+      squarify(grp.items, gr.x, iy, gr.w, ih).forEach(function (tl) {
+        var it = tl.it.it, p = it.chg != null ? it.chg : null, sg = p != null && p >= 0 ? '+' : '';
+        var txt = light ? '#0d1117' : '#e9edf3';
+        var inner = '';
+        if (tl.w > 50 && tl.h > 42) inner += icon(it, '48fx48f');
+        if (tl.w > 74 && tl.h > 60) inner += '<span class="hm-name">' + dispName(it) + '</span>';
+        if (tl.w > 36 && tl.h > 24) inner += '<span class="hm-pct">' + (p == null ? '—' : sg + p.toFixed(2) + '%') + '</span>';
+        html += '<div class="hm-t" data-hash="' + encodeURIComponent(it.hash) + '" style="left:' + tl.x.toFixed(1) + 'px;top:' + tl.y.toFixed(1) + 'px;width:' +
+          Math.max(0, tl.w - 1).toFixed(1) + 'px;height:' + Math.max(0, tl.h - 1).toFixed(1) + 'px;background:' + heatColor(p) + ';color:' + txt + '">' + inner + '</div>';
+      });
+    });
+    area.innerHTML = html;
+    Array.prototype.forEach.call(area.querySelectorAll('.hm-t'), function (el) {
+      var it = fix.list.find(function (x) { return x.hash === decodeURIComponent(el.getAttribute('data-hash')); });
+      if (!it) return;
+      el.addEventListener('mousemove', function (e) {
+        var p = it.chg != null ? it.chg : null, c = pctClass(p), sg = p != null && p >= 0 ? '+' : '', rar = rarityOf(it.hash);
+        tip.innerHTML = '<div class="hm-tt">' + icon(it, '48fx48f') + '<b style="color:' + nameColor(it.color) + '">' + dispName(it) + '</b>' + (rar ? '<i>' + rarL(rar) + '</i>' : '') + '</div>' +
+          '<div class="hm-tr"><span>' + T.price + '</span><b>' + money(it.price) + '</b></div>' +
+          '<div class="hm-tr"><span>' + T.chg + '</span><b class="' + c + '">' + (p == null ? '—' : sg + p.toFixed(2) + '%') + '</b></div>' +
+          '<div class="hm-tr"><span>' + T.vol24 + '</span><b>' + big(it.vol || 0) + '</b></div>' +
+          '<div class="hm-tr"><span>' + T.listings + '</span><b>' + (it.listings || 0).toLocaleString() + '</b></div>';
+        tip.hidden = false;
+        var gr = g.getBoundingClientRect(), tw = tip.offsetWidth || 170, th = tip.offsetHeight || 110;
+        tip.style.left = Math.min(gr.width - tw - 6, Math.max(2, e.clientX - gr.left + 14)) + 'px';
+        tip.style.top = Math.min(gr.height - th - 6, Math.max(2, e.clientY - gr.top + 14)) + 'px';
+      });
+      el.addEventListener('mouseleave', function () { tip.hidden = true; });
+      el.addEventListener('click', function () {
+        layout = '4';
+        Array.prototype.forEach.call(document.querySelectorAll('.term-layouts button'), function (x) { x.classList.toggle('on', x.getAttribute('data-layout') === '4'); });
+        active = 0; panels[0] = it.hash; renderGrid();
+      });
+    });
   }
 
   function statsBar(it, hist) {
@@ -570,5 +687,23 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
 .ob-row.ask .ob-p{color:#f0616d}.ob-row.bid .ob-p{color:#26d07c}
 .ob-p,.ob-q{position:relative;z-index:1}.ob-q{color:var(--mut)}
 .ob-mid{font-size:10.5px;color:var(--ink);text-align:center;padding:2px;border-top:1px solid var(--ln);border-bottom:1px solid var(--ln);margin:2px 0}
+.term-grid[data-layout="heat"]{display:block;background:var(--bg);padding:0}
+.hm{position:relative;width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden}
+.hm-leg{display:flex;justify-content:flex-end;gap:4px;padding:5px 10px;flex-shrink:0}
+.hm-leg span{font-size:10.5px;font-weight:600;font-variant-numeric:tabular-nums;border-radius:4px;padding:1px 8px}
+.hm-area{position:relative;flex:1;min-height:0}
+.hm-gh{position:absolute;height:17px;font-size:10.5px;color:var(--mut);padding:1px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.hm-gh b{font-variant-numeric:tabular-nums;font-weight:600}
+.hm-t{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;overflow:hidden;cursor:pointer;border-radius:2px}
+.hm-t:hover{filter:brightness(1.18);z-index:2}
+.hm-t .ic{width:30px;height:30px;flex-shrink:0}
+.hm-name{font-size:10px;font-weight:600;max-width:94%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hm-pct{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
+.hm-tip{position:absolute;z-index:5;background:var(--tipbg);border:1px solid var(--ln);border-radius:8px;padding:8px 10px;font-size:11.5px;pointer-events:none;min-width:160px;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.hm-tt{display:flex;align-items:center;gap:6px;margin-bottom:5px;padding-bottom:5px;border-bottom:1px solid var(--ln)}
+.hm-tt .ic{width:24px;height:24px}.hm-tt b{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:170px}
+.hm-tt i{font-size:9.5px;color:var(--mut);font-style:normal;border:1px solid var(--ln);border-radius:4px;padding:0 4px;flex-shrink:0}
+.hm-tr{display:flex;justify-content:space-between;gap:18px;line-height:1.55}
+.hm-tr span{color:var(--mut)}.hm-tr b{font-variant-numeric:tabular-nums;font-weight:600}
 @media(max-width:900px){.term-watch{width:200px}.wl-spark{display:none}.p-side{width:120px}}
 </style>
