@@ -23,7 +23,7 @@ const es: Dict = {
   stats: { damageTypes: 'Tipos de daño', panels: 'Paneles de análisis', languages: 'Idiomas', openSource: 'Código abierto · solo lectura' },
   featuresKicker: 'Características',
   featuresTitle: 'No solo un número — un panel de combate completo',
-  featuresSub: 'Nueve paneles, cada uno con una función. Una tecla los superpone en el juego, y los clics pasan a través para no bloquear el juego.',
+  featuresSub: 'Diez paneles, cada uno con una función. Una tecla los superpone en el juego, y los clics pasan a través para no bloquear el juego.',
   features: [
     {
       tag: 'F1 · Centro',
@@ -50,6 +50,12 @@ const es: Dict = {
       points: ['Tiempo por oleada, tiempo activo vs inactivo', 'Diferencia de equipo y habilidades completa del personaje', 'Gráfico de tendencia de tiempo de claro — haz clic en cualquier punto para inspeccionar'],
     },
     {
+      tag: 'F7 · Equipo',
+      title: 'Puntuación de equipo',
+      body: 'Una valoración de poder estilo WoW de un vistazo: cada objeto puntúa por rareza + nivel + afijos + engastes, se suma por personaje en un total y se divide en ataque y defensa.',
+      points: ['Total por personaje + división ⚔ ataque / ⛨ defensa', 'Cada objeto: icono, nombre coloreado por rareza, nivel, engastes, puntos', 'El modo detalle expande cada objeto en sus puntos por efecto'],
+    },
+    {
       tag: 'F6 · Planear',
       title: 'Planificador de farmeo personalizado',
       body: 'No es una tabla estática de wiki — calibrada a tus propias partidas reales. Gold/seg y exp/seg clasificados uno al lado del otro, diciéndote exactamente qué etapa farmear.',
@@ -62,7 +68,7 @@ const es: Dict = {
       points: ['Total y cofres de jefe', 'Cofres por hora', 'Registro con marca de tiempo por etapa'],
     },
     {
-      tag: 'F7 · Aperturas',
+      tag: 'F4 · Aperturas',
       title: 'Estadísticas de calidad al abrir',
       body: 'Desglosa cada cofre que abres en una matriz de calidad × origen: cuánto de Común a Trascendente, cuánto de cofres normales vs de jefe, con un registro de aperturas línea por línea debajo.',
       points: ['Matriz calidad × tipo de cofre (conteo + %)', 'Reparto: Común / Poco común / Raro / Legendario / Trascendente', 'Registro línea por línea: hora, tipo de cofre, calidad, objeto'],

@@ -23,7 +23,7 @@ const en: Dict = {
   stats: { damageTypes: 'Damage types', panels: 'Analysis panels', languages: 'Languages', openSource: 'Open-source · read-only' },
   featuresKicker: 'Features',
   featuresTitle: 'Not just a number — a full combat dashboard',
-  featuresSub: 'Nine panels, each with one job. One keypress overlays them on the game, and clicks pass through so they never block play.',
+  featuresSub: 'Ten panels, each with one job. One keypress overlays them on the game, and clicks pass through so they never block play.',
   features: [
     {
       tag: 'F1 · Hub',
@@ -50,6 +50,12 @@ const en: Dict = {
       points: ['Per-wave time, active vs idle running time', 'Full character gear & skill loadout diff', 'Clear-time trend chart — click any point to inspect'],
     },
     {
+      tag: 'F7 · Gear',
+      title: 'Gear Score',
+      body: 'A WoW-style power rating at a glance: each item scored from rarity + item level + affixes + sockets, rolled up per character into a total, then split into attack and defence.',
+      points: ['Per-character total + ⚔ attack / ⛨ defence split', 'Each item: icon, rarity-coloured name, level, sockets, score', 'Detailed mode expands every item into its per-effect points'],
+    },
+    {
       tag: 'F6 · Plan',
       title: 'Personalized farming planner',
       body: 'Not a static wiki table — calibrated to your own real runs. Gold/sec and exp/sec ranked side by side, telling you exactly which stage to farm.',
@@ -62,7 +68,7 @@ const en: Dict = {
       points: ['Total and boss-box counts', 'Boxes per hour', 'Timestamped log per stage'],
     },
     {
-      tag: 'F7 · Opens',
+      tag: 'F4 · Opens',
       title: 'Box-open quality stats',
       body: 'Break down every box you open into a quality × source matrix — how much Common through Transcendent, how much from normal vs boss boxes — with a line-by-line open log underneath.',
       points: ['Quality × box-kind matrix (count + %)', 'Common / Uncommon / Rare / Legendary / Transcendent split', 'Line-by-line log: time, box kind, quality, item'],
