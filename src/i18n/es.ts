@@ -23,7 +23,7 @@ const es: Dict = {
   stats: { damageTypes: 'Tipos de daño', panels: 'Paneles de análisis', languages: 'Idiomas', openSource: 'Código abierto · solo lectura' },
   featuresKicker: 'Características',
   featuresTitle: 'No solo un número — un panel de combate completo',
-  featuresSub: 'Diez paneles, cada uno con una función. Una tecla los superpone en el juego, y los clics pasan a través para no bloquear el juego.',
+  featuresSub: 'Once paneles, cada uno con una función. Una tecla los superpone en el juego, y los clics pasan a través para no bloquear el juego.',
   features: [
     {
       tag: 'F1 · Centro',
@@ -54,6 +54,12 @@ const es: Dict = {
       title: 'Puntuación de equipo',
       body: 'Una valoración de poder estilo WoW de un vistazo: cada objeto puntúa por rareza + nivel + afijos + engastes, se suma por personaje en un total y se divide en ataque y defensa.',
       points: ['Total por personaje + división ⚔ ataque / ⛨ defensa', 'Cada objeto: icono, nombre coloreado por rareza, nivel, engastes, puntos', 'El modo detalle expande cada objeto en sus puntos por efecto'],
+    },
+    {
+      tag: 'F8 · Objetos',
+      title: 'Estadísticas de objetos',
+      body: 'Cuenta todo en tu mochila, almacén y alijo de intercambio (excluyendo el equipo equipado) — una sola lista desplazable, una fila por objeto con icono, nombre coloreado por rareza y cantidad en posesión.',
+      points: ['Filtra con chips por rareza y categoría — combínalos, y los conteos se actualizan de forma cruzada con el otro filtro', 'Icono + nombre + ×N por objeto, los objetos idénticos se fusionan', 'Rareza / categoría / nombre / icono sin conexión en los 5 idiomas; la capacidad del almacén refleja tus pestañas activas'],
     },
     {
       tag: 'F6 · Planear',

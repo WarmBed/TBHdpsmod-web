@@ -23,7 +23,7 @@ const en: Dict = {
   stats: { damageTypes: 'Damage types', panels: 'Analysis panels', languages: 'Languages', openSource: 'Open-source · read-only' },
   featuresKicker: 'Features',
   featuresTitle: 'Not just a number — a full combat dashboard',
-  featuresSub: 'Ten panels, each with one job. One keypress overlays them on the game, and clicks pass through so they never block play.',
+  featuresSub: 'Eleven panels, each with one job. One keypress overlays them on the game, and clicks pass through so they never block play.',
   features: [
     {
       tag: 'F1 · Hub',
@@ -54,6 +54,12 @@ const en: Dict = {
       title: 'Gear Score',
       body: 'A WoW-style power rating at a glance: each item scored from rarity + item level + affixes + sockets, rolled up per character into a total, then split into attack and defence.',
       points: ['Per-character total + ⚔ attack / ⛨ defence split', 'Each item: icon, rarity-coloured name, level, sockets, score', 'Detailed mode expands every item into its per-effect points'],
+    },
+    {
+      tag: 'F8 · Items',
+      title: 'Item Stats',
+      body: 'Counts everything in your backpack, warehouse and trading stash (equipped gear excluded) — one scrollable list, one row per item with icon, rarity-coloured name and quantity held.',
+      points: ['Filter chips by rarity and category — combine them, and counts cross-update with the other filter', 'Icon + name + ×N per item, identical items merged', 'Offline rarity / category / name / icon in all 5 languages; warehouse capacity reflects your active tabs'],
     },
     {
       tag: 'F6 · Plan',

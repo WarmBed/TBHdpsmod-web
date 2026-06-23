@@ -14,6 +14,7 @@ import dps from '../../assets/dps.png';
 import taken from '../../assets/taken.png';
 import compare from '../../assets/compare.png';
 import gearscore from '../../assets/gearscore.png';
+import itemstats from '../../assets/itemstats.png';
 import farm from '../../assets/farm.png';
 import box from '../../assets/box.png';
 import boxopen from '../../assets/boxopen.png';
@@ -25,7 +26,7 @@ export function getStaticPaths() {
 }
 const locale = Astro.params.locale as Locale;
 const dict = getDict(locale);
-const images = [hub, dps, taken, compare, gearscore, farm, box, boxopen, heatmap, priceBag];
+const images = [hub, dps, taken, compare, gearscore, itemstats, farm, box, boxopen, heatmap, priceBag];
 const images2: (ImageMetadata | undefined)[] = [];
 images2[images.length - 1] = priceCurve;   // price card shows the backpack shot + a curve thumbnail
 ---
