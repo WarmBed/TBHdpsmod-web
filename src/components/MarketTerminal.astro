@@ -288,8 +288,12 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     var area = g.querySelector('.hm-area'), tip = g.querySelector('.hm-tip'), leg = g.querySelector('.hm-leg');
     var W = area.clientWidth, H = area.clientHeight;
     if (W < 50 || H < 50) return;
-    // tile area always = 24h volume (sqrt-compressed) so low-volume items stay visible alongside leaders
-    var rows = filteredRows().map(function (it) { return { it: it, wt: Math.sqrt((it.vol || 0) + 1) }; });
+    // tile area follows the active metric: by price in price mode (so pricey low-volume rares are visible
+    // instead of shrinking to a 1px tile), otherwise by 24h volume. sqrt keeps the long tail readable.
+    var rows = filteredRows().map(function (it) {
+      var wt = metric === 'price' ? Math.sqrt((it.price || 0) + 0.02) : Math.sqrt((it.vol || 0) + 1);
+      return { it: it, wt: wt };
+    });
     if (!rows.length) { area.innerHTML = '<div class="p-empty">' + T.noMatch + '</div>'; leg.innerHTML = ''; return; }
 
     // metric value getter + (for price/volume) a log range over the visible set for the sequential ramp
