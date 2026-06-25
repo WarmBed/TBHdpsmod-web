@@ -39,6 +39,11 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
       <button data-layout="1">1</button>
       <button data-layout="heat">{T.heat}</button>
     </div>
+    <div class="term-tf" id="t-metric" style="display:none">
+      <button data-metric="chg" class="on">{T.chg}</button>
+      <button data-metric="price">{T.price}</button>
+      <button data-metric="vol">{T.vol24}</button>
+    </div>
     <button id="t-theme" class="term-icon" title={T.theme} aria-label={T.theme}><svg viewBox="0 0 16 16" width="15" height="15"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.8 A6.2 6.2 0 0 1 8 14.2 Z" fill="currentColor"/></svg></button>
     <span id="t-meta" class="term-meta"></span>
   </div>
@@ -56,7 +61,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   var UP = '#26d07c', DOWN = '#f0616d', UPF = 'rgba(38,208,124,.13)', DNF = 'rgba(240,97,109,.13)';
   var MA = [{ p: 5, c: '#e6e8ec' }, { p: 10, c: '#f5b942' }, { p: 30, c: '#c66bd6' }];
   var BOLLC = { mid: '#e6e8ec', band: '#3aa0e0' };
-  var fix = null, panels = [null, null, null, null], active = 0, layout = '4', tf = 240, showMA = true, showBOLL = true, sortKey = 'vol', sortDir = -1, catFilter = '', rarFilter = '';
+  var fix = null, panels = [null, null, null, null], active = 0, layout = '4', tf = 240, showMA = true, showBOLL = true, sortKey = 'vol', sortDir = -1, catFilter = '', rarFilter = '', heatMetric = 'chg';
   var $ = function (id) { return document.getElementById(id); };
   var termEl = document.querySelector('.term');
   function cvar(n) { return getComputedStyle(termEl).getPropertyValue(n).trim(); }
@@ -224,6 +229,7 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
 
   function renderGrid() {
     var g = $('t-grid'); g.setAttribute('data-layout', layout);
+    $('t-metric').style.display = layout === 'heat' ? 'flex' : 'none';   // metric switch only applies to the heatmap
     if (layout === 'heat') { renderHeat(g); return; }
     var count = layout === '1' ? 1 : 4, html = '';
     for (var i = 0; i < count; i++) html += '<div class="panel" data-i="' + i + '"></div>';
@@ -235,7 +241,8 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
     paintActive();
   }
 
-  // ---- Futu-style heatmap: area = 24h volume (sqrt-compressed), color = 24h change ----
+  // ---- Futu-style heatmap: area = 24h volume (sqrt-compressed); colour/label = the selected metric
+  // (24h change ·diverging· / price / 24h volume ·sequential·), switched via the #t-metric toggle ----
   function mixHex(a, b, t) {
     function c(h, i) { return parseInt(h.slice(i, i + 2), 16); }
     var r = Math.round(c(a, 1) + (c(b, 1) - c(a, 1)) * t), g = Math.round(c(a, 3) + (c(b, 3) - c(a, 3)) * t), bl = Math.round(c(a, 5) + (c(b, 5) - c(a, 5)) * t);
@@ -277,39 +284,78 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   function renderHeat(g) {
     g.innerHTML = '<div class="hm"><div class="hm-leg"></div><div class="hm-area"></div><div class="hm-tip" hidden></div></div>';
     var light = termEl.getAttribute('data-theme') === 'light';
-    g.querySelector('.hm-leg').innerHTML = [-3, -2, -1, 0, 1, 2, 3].map(function (p) {
-      return '<span style="background:' + heatColor(p) + ';color:' + (light ? '#0d1117' : '#e7ecf3') + '">' + (p > 0 ? '+' : '') + p + '%</span>';
-    }).join('');
-    var area = g.querySelector('.hm-area'), tip = g.querySelector('.hm-tip');
+    var metric = heatMetric;                              // 'chg' | 'price' | 'vol'
+    var area = g.querySelector('.hm-area'), tip = g.querySelector('.hm-tip'), leg = g.querySelector('.hm-leg');
     var W = area.clientWidth, H = area.clientHeight;
     if (W < 50 || H < 50) return;
-    // sqrt compresses the volume range so low-volume items stay visible alongside the leaders
+    // tile area always = 24h volume (sqrt-compressed) so low-volume items stay visible alongside leaders
     var rows = filteredRows().map(function (it) { return { it: it, wt: Math.sqrt((it.vol || 0) + 1) }; });
-    if (!rows.length) { area.innerHTML = '<div class="p-empty">' + T.noMatch + '</div>'; return; }
+    if (!rows.length) { area.innerHTML = '<div class="p-empty">' + T.noMatch + '</div>'; leg.innerHTML = ''; return; }
+
+    // metric value getter + (for price/volume) a log range over the visible set for the sequential ramp
+    var mget = metric === 'price' ? function (it) { return it.price; }
+             : metric === 'vol' ? function (it) { return it.vol || 0; }
+             : function (it) { return it.chg; };
+    var HOT = metric === 'price' ? (light ? '#2f6fd0' : '#4a93e6') : (light ? '#d97d1f' : '#f0a93f');
+    var SEQLO = light ? '#eef1f6' : '#222a36';
+    var lmin = 0, lspan = 1;
+    if (metric !== 'chg') {
+      var vmin = Infinity, vmax = -Infinity;
+      rows.forEach(function (r) { var v = mget(r.it); if (v > 0) { if (v < vmin) vmin = v; if (v > vmax) vmax = v; } });
+      if (vmin === Infinity) { vmin = 1; vmax = 1; }
+      lmin = Math.log(vmin); lspan = Math.log(vmax) - lmin || 1;
+    }
+    function seqColor(v) { return v > 0 ? mixHex(SEQLO, HOT, Math.max(0, Math.min(1, (Math.log(v) - lmin) / lspan))) : (light ? '#dfe3ea' : '#222a36'); }
+    function tileColor(it) { return metric === 'chg' ? heatColor(it.chg != null ? it.chg : null) : seqColor(mget(it)); }
+    function tileLabel(it) {
+      if (metric === 'chg') { var p = it.chg; return p == null ? '—' : (p >= 0 ? '+' : '') + p.toFixed(2) + '%'; }
+      return metric === 'price' ? money(it.price) : big(it.vol || 0);
+    }
+
+    // legend: diverging −3…+3% for change, a low→high sequential ramp for price / volume
+    if (metric === 'chg') {
+      leg.innerHTML = [-3, -2, -1, 0, 1, 2, 3].map(function (p) {
+        return '<span style="background:' + heatColor(p) + ';color:' + (light ? '#0d1117' : '#e7ecf3') + '">' + (p > 0 ? '+' : '') + p + '%</span>';
+      }).join('');
+    } else {
+      var parts = [];
+      for (var s = 0; s < 5; s++) {
+        var t = s / 4, val = Math.exp(lmin + t * lspan);
+        parts.push('<span style="background:' + mixHex(SEQLO, HOT, t) + ';color:' + (t > 0.5 ? '#fff' : (light ? '#0d1117' : '#cfd6e0')) + '">' + (metric === 'price' ? money(val) : big(Math.round(val))) + '</span>');
+      }
+      leg.innerHTML = parts.join('');
+    }
+
     var byCat = {};
     rows.forEach(function (r) { var c = categoryOf(r.it) || 'other'; (byCat[c] = byCat[c] || []).push(r); });
     var groups = ['weapon', 'armor', 'accessory', 'material', 'other'].filter(function (c) { return byCat[c]; }).map(function (c) {
       var its = byCat[c].sort(function (a, b) { return b.wt - a.wt; });
-      var wt = 0, wchg = 0, cw = 0;
-      its.forEach(function (r) { wt += r.wt; if (r.it.chg != null) { wchg += r.it.chg * r.wt; cw += r.wt; } });
-      return { cat: c, items: its, wt: wt, chg: cw ? wchg / cw : null };
+      var wt = 0, wagg = 0, cw = 0, sum = 0;
+      its.forEach(function (r) {
+        wt += r.wt; var v = mget(r.it);
+        if (metric === 'vol') sum += (r.it.vol || 0);
+        else if (v != null) { wagg += v * r.wt; cw += r.wt; }
+      });
+      return { cat: c, items: its, wt: wt, agg: metric === 'vol' ? sum : (cw ? wagg / cw : null) };
     }).sort(function (a, b) { return b.wt - a.wt; });
-    var html = '', HEAD = 17;
+    function groupLabel(agg) {
+      if (agg == null) return '';
+      if (metric === 'chg') return ' <b class="' + pctClass(agg) + '">' + (agg >= 0 ? '+' : '') + agg.toFixed(2) + '%</b>';
+      return ' <b>' + (metric === 'price' ? money(agg) : big(agg)) + '</b>';
+    }
+
+    var html = '', HEAD = 17, txt = light ? '#0d1117' : '#e9edf3';
     squarify(groups, 0, 0, W, H).forEach(function (gr) {
       var grp = gr.it, hasHead = gr.h > 44 && gr.w > 60;
-      var gc = pctClass(grp.chg), gs = grp.chg != null && grp.chg >= 0 ? '+' : '';
-      if (hasHead) html += '<div class="hm-gh" style="left:' + gr.x.toFixed(1) + 'px;top:' + gr.y.toFixed(1) + 'px;width:' + gr.w.toFixed(1) + 'px">' + fL(grp.cat) +
-        (grp.chg != null ? ' <b class="' + gc + '">' + gs + grp.chg.toFixed(2) + '%</b>' : '') + '</div>';
+      if (hasHead) html += '<div class="hm-gh" style="left:' + gr.x.toFixed(1) + 'px;top:' + gr.y.toFixed(1) + 'px;width:' + gr.w.toFixed(1) + 'px">' + fL(grp.cat) + groupLabel(grp.agg) + '</div>';
       var iy = gr.y + (hasHead ? HEAD : 0), ih = gr.h - (hasHead ? HEAD : 0);
       squarify(grp.items, gr.x, iy, gr.w, ih).forEach(function (tl) {
-        var it = tl.it.it, p = it.chg != null ? it.chg : null, sg = p != null && p >= 0 ? '+' : '';
-        var txt = light ? '#0d1117' : '#e9edf3';
-        var inner = '';
+        var it = tl.it.it, inner = '';
         if (tl.w > 50 && tl.h > 42) inner += icon(it, '48fx48f');
         if (tl.w > 74 && tl.h > 60) inner += '<span class="hm-name">' + dispName(it) + '</span>';
-        if (tl.w > 36 && tl.h > 24) inner += '<span class="hm-pct">' + (p == null ? '—' : sg + p.toFixed(2) + '%') + '</span>';
+        if (tl.w > 36 && tl.h > 24) inner += '<span class="hm-pct">' + tileLabel(it) + '</span>';
         html += '<div class="hm-t" data-hash="' + encodeURIComponent(it.hash) + '" style="left:' + tl.x.toFixed(1) + 'px;top:' + tl.y.toFixed(1) + 'px;width:' +
-          Math.max(0, tl.w - 1).toFixed(1) + 'px;height:' + Math.max(0, tl.h - 1).toFixed(1) + 'px;background:' + heatColor(p) + ';color:' + txt + '">' + inner + '</div>';
+          Math.max(0, tl.w - 1).toFixed(1) + 'px;height:' + Math.max(0, tl.h - 1).toFixed(1) + 'px;background:' + tileColor(it) + ';color:' + txt + '">' + inner + '</div>';
       });
     });
     area.innerHTML = html;
@@ -560,6 +606,9 @@ const RAW = 'https://raw.githubusercontent.com/WarmBed/TBH-DPS-dashboard/data';
   });
   Array.prototype.forEach.call(document.querySelectorAll('.term-layouts button'), function (b) {
     b.addEventListener('click', function () { document.querySelectorAll('.term-layouts button').forEach(function (x) { x.classList.remove('on'); }); b.classList.add('on'); layout = b.getAttribute('data-layout'); if (layout === '1') active = 0; renderGrid(); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('#t-metric button'), function (b) {
+    b.addEventListener('click', function () { document.querySelectorAll('#t-metric button').forEach(function (x) { x.classList.remove('on'); }); b.classList.add('on'); heatMetric = b.getAttribute('data-metric'); renderHeat($('t-grid')); });
   });
   var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(renderGrid, 150); });
 
